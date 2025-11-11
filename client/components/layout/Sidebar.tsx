@@ -20,7 +20,6 @@ const items = [
   { label: "Evaluaciones", to: "/evaluaciones", icon: ClipboardList, color: "text-brand", roles: ["estudiante", "docente", "admin"] },
   { label: "Repositorio Académico", to: "/repositorio", icon: LibraryBig, color: "text-contrast", roles: ["estudiante", "docente", "admin"] },
   { label: "Grupos de Estudio", to: "/grupos", icon: Users, color: "text-brand", roles: ["estudiante", "docente", "admin"] },
-  { label: "Grupos Públicos", to: "/grupos/publicos", icon: Users, color: "text-contrast", roles: ["estudiante", "docente", "admin"] },
   { label: "Dashboard Docente", to: "/docente", icon: BarChart3, color: "text-contrast", roles: ["docente", "admin"] },
   { label: "Planificación y Hábitos", to: "/habitos", icon: CalendarCheck2, color: "text-brand", roles: ["estudiante"] },
   { label: "Mi Perfil / Configuración", to: "/profile", icon: UserCog, color: "text-black", roles: ["estudiante", "docente", "admin"] },

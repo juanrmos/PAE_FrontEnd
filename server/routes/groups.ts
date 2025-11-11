@@ -48,9 +48,9 @@ export interface GroupsCountsResponse {
 
 // Demo in-memory dataset
 const myGroups: GroupSummary[] = [
-  { id: "g1", nombre: "Matemáticas I", progreso: 86, materia: "Cálculo diferencial", descripcion: "Grupo para reforzar conceptos clave y resolver dudas semanales." },
-  { id: "g2", nombre: "Química Básica", progreso: 62, materia: "Estructura atómica", descripcion: "Apuntes, guías y prácticas de laboratorio." },
-  { id: "g3", nombre: "Historia Moderna", progreso: 41, materia: "Revoluciones del s. XIX", descripcion: "Lecturas guiadas y debates históricos." },
+  { id: "g1", nombre: "Matemáticas I", progreso: 86, materia: "Cálculo diferencial", descripcion: "Grupo para reforzar conceptos clave y resolver dudas semanales.", miembros: 18, imagen: undefined },
+  { id: "g2", nombre: "Química Básica", progreso: 62, materia: "Estructura atómica", descripcion: "Apuntes, guías y prácticas de laboratorio.", miembros: 12, imagen: undefined },
+  { id: "g3", nombre: "Historia Moderna", progreso: 41, materia: "Revoluciones del s. XIX", descripcion: "Lecturas guiadas y debates históricos.", miembros: 21, imagen: undefined },
 ];
 
 const publicGroups: GroupSummary[] = [

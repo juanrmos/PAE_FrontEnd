@@ -1,8 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 export default function Resources() {
-  const [role, setRole] = useState<"Estudiante" | "Docente">("Estudiante");
+  const [role, setRole] = useState<"docente" | "estudiante">(() => (localStorage.getItem("role") as any) || "estudiante");
+
+  useEffect(() => {
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === "role") setRole((e.newValue as any) || "estudiante");
+    };
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  }, []);
 
   const [grupo, setGrupo] = useState({ nombre: "", descripcion: "", materia: "", institucion: "", visibilidad: "privado" as "privado" | "publico", icono: "" });
   const [inv, setInv] = useState({ id: "", mensaje: "" });
@@ -22,15 +30,9 @@ export default function Resources() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-2">
-        <label className="text-sm text-neutral-700">Rol</label>
-        <select value={role} onChange={(e) => setRole(e.target.value as any)} className="rounded-lg border border-neutral-200 px-3 py-2 text-sm">
-          <option>Estudiante</option>
-          <option>Docente</option>
-        </select>
-      </div>
+      <div className="text-sm text-neutral-700">Rol: <span className="font-semibold text-contrast">{role === "docente" ? "Docente" : "Estudiante"}</span></div>
 
-      {role === "Docente" && (
+      {role === "docente" && (
         <section className="rounded-2xl border border-neutral-200 p-4">
           <h2 className="text-lg font-semibold text-contrast">Crear Grupo</h2>
           <div className="mt-3 grid gap-2 md:grid-cols-2">

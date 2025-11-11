@@ -29,5 +29,12 @@ export function createServer() {
   app.get("/api/auth/sessions", handleGetSessions);
   app.post("/api/auth/logout-all", handleLogoutAll);
 
+  // Groups/Communities API
+  app.get("/api/groups/my", getMyGroups);
+  app.get("/api/groups/public", getPublicGroups);
+  app.get("/api/groups/:id/files", getGroupFiles);
+  app.get("/api/groups/:id/analytics", getGroupAnalytics);
+  app.get("/api/groups/counts", getGroupsCounts);
+
   return app;
 }

@@ -4,13 +4,21 @@ import { Home, LibraryBig } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default function RepositoryModuleLayout() {
-  const [role, setRole] = useState<"Estudiante" | "Docente">("Estudiante");
+  const [role, setRole] = useState<"docente" | "estudiante">(() => (localStorage.getItem("role") as any) || "estudiante");
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === "role") setRole((e.newValue as any) || "estudiante");
+    };
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  }, []);
+
+  useEffect(() => {
     if (location.pathname === "/repositorio") {
-      if (role === "Docente") navigate("/repositorio/mis", { replace: true });
+      if (role === "docente") navigate("/repositorio/mis", { replace: true });
       else navigate("/repositorio/populares", { replace: true });
     }
   }, [role, location.pathname, navigate]);
@@ -39,13 +47,7 @@ export default function RepositoryModuleLayout() {
               <Link to="/home" className="inline-flex items-center gap-2 text-sm font-semibold text-contrast hover:opacity-90"><Home className="h-4 w-4" /> Volver a Inicio</Link>
               <h1 className="text-xl font-bold text-contrast">Repositorio Académico</h1>
             </div>
-            <div className="flex items-center gap-2">
-              <label className="text-sm text-neutral-700">Rol</label>
-              <select value={role} onChange={(e) => setRole(e.target.value as any)} className="rounded-lg border border-neutral-200 px-3 py-2 text-sm">
-                <option>Estudiante</option>
-                <option>Docente</option>
-              </select>
-            </div>
+            <div className="text-sm text-neutral-700">Rol: <span className="font-semibold text-contrast">{role === "docente" ? "Docente" : "Estudiante"}</span></div>
           </div>
         </div>
 

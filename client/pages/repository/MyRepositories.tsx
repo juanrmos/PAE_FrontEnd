@@ -23,13 +23,15 @@ export default function MyRepositories() {
     <div>
       <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <h2 className="text-lg font-semibold text-contrast">Mis Repositorios</h2>
-        <div className="flex gap-3">
-          <Link to="/repositorio/gestionar/nuevo" className="inline-flex items-center gap-1 rounded-xl bg-brand px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand/90"><FolderEdit className="h-4 w-4" /> Crear Nuevo Repositorio</Link>
-          <label className="inline-flex cursor-pointer items-center gap-1 rounded-xl bg-brand px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand/90">
-            <UploadCloud className="h-4 w-4" /> Subir Recurso (PDF/DOC)
-            <input type="file" accept=".pdf,.doc,.docx" multiple className="hidden" onChange={onUpload} />
-          </label>
-        </div>
+        {((localStorage.getItem("role") as any) || "estudiante") === "docente" && (
+          <div className="flex gap-3">
+            <Link to="/repositorio/gestionar/nuevo" className="inline-flex items-center gap-1 rounded-xl bg-brand px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand/90"><FolderEdit className="h-4 w-4" /> Crear Nuevo Repositorio</Link>
+            <label className="inline-flex cursor-pointer items-center gap-1 rounded-xl bg-brand px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand/90">
+              <UploadCloud className="h-4 w-4" /> Subir Recurso (PDF/DOC)
+              <input type="file" accept=".pdf,.doc,.docx" multiple className="hidden" onChange={onUpload} />
+            </label>
+          </div>
+        )}
       </div>
 
       <div className="rounded-2xl border border-neutral-200 p-4">

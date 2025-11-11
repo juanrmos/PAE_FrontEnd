@@ -54,7 +54,9 @@ export default function Index() {
       });
       if (!res.ok) {
         const data = await res.json();
-        setLoginError(data?.message || "Fallo al iniciar sesión");
+        const msg = data?.message || "Fallo al iniciar sesión";
+        setLoginError(msg);
+        toast.error(msg);
         return;
       }
       const data = (await res.json()) as LoginResponse;
@@ -237,7 +239,7 @@ export default function Index() {
                     });
                     if (!res.ok) {
                       const data = await res.json();
-                      alert(data?.message || "Código inválido");
+                      toast.error(data?.message || "Código inválido");
                       return;
                     }
                     const data = (await res.json()) as Verify2FAResponse;

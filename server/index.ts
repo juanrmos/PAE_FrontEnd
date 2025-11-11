@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
 import { handleForgotPassword, handleLogin, handleVerify2FA, handleRegister, handleGetSessions, handleLogoutAll } from "./routes/auth";
+import { getGroupAnalytics, getGroupFiles, getGroupsCounts, getMyGroups, getPublicGroups } from "./routes/groups";
 
 export function createServer() {
   const app = express();

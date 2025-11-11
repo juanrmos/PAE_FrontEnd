@@ -94,6 +94,7 @@ export default function GroupsModuleLayout() {
               <Link to="/home" className="inline-flex items-center gap-2 text-sm font-semibold text-contrast hover:opacity-90"><Home className="h-4 w-4" /> Volver a Inicio</Link>
               <h1 className="text-xl font-bold text-contrast">Comunidades y Grupos de Estudio</h1>
             </div>
+            <div className="text-sm text-neutral-700">Rol: <span className="font-semibold text-contrast">{role === "docente" ? "Docente" : "Estudiante"}</span></div>
           </div>
 
           <div className="relative">

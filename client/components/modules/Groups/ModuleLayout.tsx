@@ -15,7 +15,6 @@ const MOCK_USERS: User[] = [
 ];
 
 export default function GroupsModuleLayout() {
-  const [role, setRole] = useState<"Estudiante" | "Docente">("Estudiante");
   const [q, setQ] = useState("");
 
   const sugerencias = useMemo(() => {
@@ -57,6 +56,7 @@ export default function GroupsModuleLayout() {
                 </>
               )}
             </NavLink>
+            <NavLink to="/grupos/recursos" className={({ isActive }) => cn("block rounded-xl px-3 py-2 font-medium", isActive ? "bg-contrast/10 text-contrast" : "text-neutral-700 hover:bg-neutral-50")}>Recursos</NavLink>
             <NavLink to="/grupos/publicos" className={({ isActive }) => cn("flex items-center justify-between rounded-xl px-3 py-2 font-medium", isActive ? "bg-contrast/10 text-contrast" : "text-neutral-700 hover:bg-neutral-50")}>
               {({ isActive }) => (
                 <>
@@ -81,7 +81,6 @@ export default function GroupsModuleLayout() {
                 </>
               )}
             </NavLink>
-            <NavLink to="/grupos/recursos" className={({ isActive }) => cn("block rounded-xl px-3 py-2 font-medium", isActive ? "bg-contrast/10 text-contrast" : "text-neutral-700 hover:bg-neutral-50")}>Recursos</NavLink>
           </nav>
         </div>
       </aside>
@@ -94,13 +93,6 @@ export default function GroupsModuleLayout() {
             <div className="flex items-center gap-3">
               <Link to="/home" className="inline-flex items-center gap-2 text-sm font-semibold text-contrast hover:opacity-90"><Home className="h-4 w-4" /> Volver a Inicio</Link>
               <h1 className="text-xl font-bold text-contrast">Comunidades y Grupos de Estudio</h1>
-            </div>
-            <div className="flex items-center gap-2">
-              <label className="text-sm text-neutral-700">Rol</label>
-              <select value={role} onChange={(e) => setRole(e.target.value as any)} className="rounded-lg border border-neutral-200 px-3 py-2 text-sm">
-                <option>Estudiante</option>
-                <option>Docente</option>
-              </select>
             </div>
           </div>
 

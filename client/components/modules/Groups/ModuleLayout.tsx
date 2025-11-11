@@ -3,6 +3,8 @@ import { useMemo, useState } from "react";
 import { Home, Users } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { useQuery } from "@tanstack/react-query";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type User = { id: string; nombre: string };
 const MOCK_USERS: User[] = [
@@ -26,8 +28,14 @@ export default function GroupsModuleLayout() {
     toast.success(`Solicitud enviada a ${u.nombre}`);
   };
 
-  // Contadores dinámicos (mock) para badges en la barra secundaria
-  const counts = { mis: 3, publicos: 8, foros: 5 };
+  const { data: counts, isLoading: loadingCounts } = useQuery<{ mis: number; publicos: number; foros: number }>({
+    queryKey: ["groups-counts"],
+    queryFn: async () => {
+      const res = await fetch("/api/groups/counts");
+      if (!res.ok) throw new Error("Failed to load counts");
+      return res.json();
+    },
+  });
 
   return (
     <div className="md:flex">
@@ -37,11 +45,15 @@ export default function GroupsModuleLayout() {
           <Link to="/home" className="mb-4 inline-flex items-center gap-2 text-sm font-semibold text-contrast hover:opacity-90"><Home className="h-4 w-4" /> Volver a Inicio</Link>
           <h2 className="flex items-center gap-2 text-lg font-bold text-contrast"><Users className="h-5 w-5" /> Comunidades</h2>
           <nav className="mt-4 space-y-1 text-sm">
-            <NavLink to="/grupos" end className={({ isActive }) => cn("flex items-center justify-between rounded-xl px-3 py-2 font-medium", isActive ? "bg-contrast/10 text-contrast" : "text-neutral-700 hover:bg-neutral-50")}> 
+            <NavLink to="/grupos" end className={({ isActive }) => cn("flex items-center justify-between rounded-xl px-3 py-2 font-medium", isActive ? "bg-contrast/10 text-contrast" : "text-neutral-700 hover:bg-neutral-50")}>
               {({ isActive }) => (
                 <>
                   <span className="mr-2">Mis Comunidades</span>
-                  <span className={cn("rounded-full px-2 py-0.5 text-xs font-semibold", isActive ? "bg-brand text-white" : "bg-brand/10 text-brand")}>{counts.mis}</span>
+                  {loadingCounts ? (
+                    <Skeleton className={cn("h-5 w-10 rounded bg-neutral-200", isActive && "bg-neutral-300")} />
+                  ) : (
+                    <span className={cn("rounded-full px-2 py-0.5 text-xs font-semibold", isActive ? "bg-brand text-white" : "bg-brand/10 text-brand")}>{counts?.mis ?? 0}</span>
+                  )}
                 </>
               )}
             </NavLink>
@@ -49,7 +61,11 @@ export default function GroupsModuleLayout() {
               {({ isActive }) => (
                 <>
                   <span className="mr-2">Comunidades Públicas</span>
-                  <span className={cn("rounded-full px-2 py-0.5 text-xs font-semibold", isActive ? "bg-brand text-white" : "bg-brand/10 text-brand")}>{counts.publicos}</span>
+                  {loadingCounts ? (
+                    <Skeleton className={cn("h-5 w-10 rounded bg-neutral-200", isActive && "bg-neutral-300")} />
+                  ) : (
+                    <span className={cn("rounded-full px-2 py-0.5 text-xs font-semibold", isActive ? "bg-brand text-white" : "bg-brand/10 text-brand")}>{counts?.publicos ?? 0}</span>
+                  )}
                 </>
               )}
             </NavLink>
@@ -57,7 +73,11 @@ export default function GroupsModuleLayout() {
               {({ isActive }) => (
                 <>
                   <span className="mr-2">Foros Públicos</span>
-                  <span className={cn("rounded-full px-2 py-0.5 text-xs font-semibold", isActive ? "bg-brand text-white" : "bg-brand/10 text-brand")}>{counts.foros}</span>
+                  {loadingCounts ? (
+                    <Skeleton className={cn("h-5 w-10 rounded bg-neutral-200", isActive && "bg-neutral-300")} />
+                  ) : (
+                    <span className={cn("rounded-full px-2 py-0.5 text-xs font-semibold", isActive ? "bg-brand text-white" : "bg-brand/10 text-brand")}>{counts?.foros ?? 0}</span>
+                  )}
                 </>
               )}
             </NavLink>

@@ -258,7 +258,7 @@ export default function GroupDetail() {
         </section>
       )}
 
-      {tab !== 'foros' && tab !== 'archivos' && tab !== 'analiticas' && (
+      {tab !== 'chat' && tab !== 'foros' && tab !== 'archivos' && tab !== 'analiticas' && (
         <section className="rounded-2xl border border-neutral-200 p-6 text-sm text-neutral-600">Contenido de la pestaña "{tab}"</section>
       )}
     </div>

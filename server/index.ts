@@ -4,6 +4,7 @@ import cors from "cors";
 import { handleDemo } from "./routes/demo";
 import { handleForgotPassword, handleLogin, handleVerify2FA, handleRegister, handleGetSessions, handleLogoutAll } from "./routes/auth";
 import { getGroupAnalytics, getGroupFiles, getGroupsCounts, getMyGroups, getPublicGroups } from "./routes/groups";
+import { getPopular, getMyRepos, saveRepo } from "./routes/repository";
 
 export function createServer() {
   const app = express();
@@ -35,6 +36,11 @@ export function createServer() {
   app.get("/api/groups/:id/files", getGroupFiles);
   app.get("/api/groups/:id/analytics", getGroupAnalytics);
   app.get("/api/groups/counts", getGroupsCounts);
+
+  // Repository API
+  app.get("/api/repos/popular", getPopular);
+  app.get("/api/repos/my", getMyRepos);
+  app.post("/api/repos/save", saveRepo);
 
   return app;
 }

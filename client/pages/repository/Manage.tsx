@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { FileText, Link2, Trash2, UploadCloud } from "lucide-react";
+import { toast } from "sonner";
 
 export default function Manage() {
   const params = useParams();
@@ -79,7 +80,7 @@ export default function Manage() {
       </section>
 
       <div className="mt-6 text-right">
-        <button className="rounded-xl bg-brand px-5 py-3 text-base font-semibold text-white hover:bg-brand/90">Guardar Repositorio</button>
+        <button onClick={async () => { try { const res = await fetch('/api/repos/save', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...repoData, files: files.map(f=>f.name), links }) }); if (!res.ok) throw new Error(); toast.success('Repositorio guardado'); } catch { toast.error('No se pudo guardar'); } }} className="rounded-xl bg-brand px-5 py-3 text-base font-semibold text-white hover:bg-brand/90">Guardar Repositorio</button>
       </div>
     </div>
   );

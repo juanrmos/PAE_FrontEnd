@@ -3,7 +3,7 @@ import { Sidebar, type UserRole } from "./Sidebar";
 import { cn } from "@/lib/utils";
 import { Menu } from "lucide-react";
 
-export default function AppLayout({ children, role: roleProp }: { children: React.ReactNode; role?: UserRole }) {
+export default function AppLayout({ children, role: roleProp, hideSidebar }: { children: React.ReactNode; role?: UserRole; hideSidebar?: boolean }) {
   const [open, setOpen] = useState(false);
   const [role, setRole] = useState<UserRole>(() => (localStorage.getItem("role") as UserRole) || (roleProp ?? "estudiante"));
 
@@ -18,8 +18,8 @@ export default function AppLayout({ children, role: roleProp }: { children: Reac
   }, [role, roleProp]);
   return (
     <div className="min-h-screen bg-white text-black">
-      <Sidebar role={role} />
-      <div className="md:pl-72">
+      {!hideSidebar && <Sidebar role={role} />}
+      <div className={cn(hideSidebar ? "md:pl-0" : "md:pl-72")}>
         <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-neutral-200 bg-white px-4 py-3 md:hidden">
           <button aria-label="Abrir menú" className="rounded-lg p-2 hover:bg-neutral-100" onClick={() => setOpen(true)}>
             <Menu className="h-5 w-5" />

@@ -38,7 +38,7 @@ const App = () => (
         <Route path="/home" element={<AppLayout><Home /></AppLayout>} />
         <Route path="/cursos" element={<AppLayout><Placeholder title="Cursos" /></AppLayout>} />
         <Route path="/evaluaciones" element={<AppLayout><Placeholder title="Evaluaciones" /></AppLayout>} />
-        <Route path="/repositorio" element={<AppLayout><RepositoryModuleLayout /></AppLayout>}>
+        <Route path="/repositorio" element={<AppLayout hideSidebar><RepositoryModuleLayout /></AppLayout>}>
           <Route index element={<Popular />} />
           <Route path="populares" element={<Popular />} />
           <Route path="mis" element={<MyRepositories />} />

@@ -2,27 +2,32 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { Download, Eye, Search, Star } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useMemo, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { Skeleton } from "@/components/ui/skeleton";
+import { toast } from "sonner";
 
 type Repo = { id: string; titulo: string; docente: string; temas: string[]; descargas: number; vistas: number };
 
-const DATA: Repo[] = [
-  { id: "r1", titulo: "Introducción al Cálculo", docente: "Dra. Elena Ríos", temas: ["matemáticas", "cálculo"], descargas: 1523, vistas: 4820 },
-  { id: "r2", titulo: "Física Cuántica: Conceptos Clave", docente: "Prof. Javier Soto", temas: ["física", "cuántica"], descargas: 980, vistas: 2130 },
-  { id: "r3", titulo: "Gramática Española Avanzada", docente: "Mtra. Lucía Prado", temas: ["lengua", "gramática"], descargas: 712, vistas: 1695 },
-  { id: "r4", titulo: "Química Orgánica I", docente: "Dr. Martín Ledesma", temas: ["química", "orgánica"], descargas: 1230, vistas: 3055 },
-  { id: "r5", titulo: "Historia de América Latina", docente: "Lic. Sofía Campos", temas: ["historia", "américa"], descargas: 645, vistas: 1420 },
-  { id: "r6", titulo: "Programación en JavaScript", docente: "Ing. Diego Mena", temas: ["programación", "javascript"], descargas: 2045, vistas: 5210 },
-];
-
 export default function Popular() {
   const [q, setQ] = useState("");
-  const [favs, setFavs] = useState<Record<string, boolean>>({ r2: true });
+  const [favs, setFavs] = useState<Record<string, boolean>>({});
+
+  const { data, isLoading, isError } = useQuery<{ repos: Repo[] }>({
+    queryKey: ["repos", "popular"],
+    queryFn: async () => {
+      const res = await fetch("/api/repos/popular");
+      if (!res.ok) throw new Error("Failed to load");
+      return res.json();
+    },
+  });
 
   const list = useMemo(() => {
     const s = q.trim().toLowerCase();
-    if (!s) return DATA;
-    return DATA.filter((r) => r.titulo.toLowerCase().includes(s) || r.docente.toLowerCase().includes(s) || r.temas.some((t) => t.toLowerCase().includes(s)));
-  }, [q]);
+    const base = data?.repos || [];
+    if (!s) return base;
+    return base.filter((r) => r.titulo.toLowerCase().includes(s) || r.docente.toLowerCase().includes(s) || r.temas.some((t) => t.toLowerCase().includes(s)));
+  }, [q, data]);
 
   return (
     <div>
@@ -34,15 +39,40 @@ export default function Popular() {
           <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-neutral-500" />
           <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Buscar por palabra clave, tema o docente..." className="w-full rounded-xl border border-neutral-200 bg-white px-10 py-3 outline-none transition focus:border-contrast focus:ring-2 focus:ring-contrast/20" />
         </div>
+
+        {isError && (
+          <div className="mb-4 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">No se pudo cargar. Intenta de nuevo.</div>
+        )}
+
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {list.map((r) => (
+          {isLoading && (
+            <>
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="rounded-2xl border border-neutral-200 p-4">
+                  <Skeleton className="mb-2 h-5 w-2/3 bg-neutral-200" />
+                  <Skeleton className="h-3 w-1/3 bg-neutral-200" />
+                  <div className="mt-3 flex gap-2">
+                    <Skeleton className="h-5 w-12 rounded-full bg-neutral-200" />
+                    <Skeleton className="h-5 w-16 rounded-full bg-neutral-200" />
+                  </div>
+                  <div className="mt-3 flex gap-4">
+                    <Skeleton className="h-4 w-24 bg-neutral-200" />
+                    <Skeleton className="h-4 w-24 bg-neutral-200" />
+                  </div>
+                  <Skeleton className="mt-4 h-9 w-32 rounded-xl bg-neutral-200" />
+                </div>
+              ))}
+            </>
+          )}
+
+          {!isLoading && list.map((r) => (
             <article key={r.id} className="rounded-2xl border border-neutral-200 p-4 hover:bg-neutral-50">
               <div className="mb-2 flex items-start justify-between gap-3">
                 <div>
                   <h3 className="font-semibold text-contrast">{r.titulo}</h3>
                   <div className="text-xs text-neutral-600">Por: {r.docente}</div>
                 </div>
-                <button aria-label="Marcar como favorito" onClick={() => setFavs((f) => ({ ...f, [r.id]: !f[r.id] }))} className="rounded-lg p-1 hover:bg-neutral-100">
+                <button aria-label="Marcar como favorito" onClick={() => { setFavs((f) => ({ ...f, [r.id]: !f[r.id] })); toast.success(favs[r.id] ? "Quitado de favoritos" : "Marcado como favorito"); }} className="rounded-lg p-1 hover:bg-neutral-100">
                   <Star className={cn("h-5 w-5", favs[r.id] ? "fill-brand stroke-brand" : "stroke-neutral-400")} />
                 </button>
               </div>

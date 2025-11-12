@@ -1,22 +1,27 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FolderEdit, Share2, UploadCloud } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { Skeleton } from "@/components/ui/skeleton";
+import { toast } from "sonner";
 
  type Repo = { id: string; nombre: string; fecha: string; estado: "Publicado" | "Borrador" };
 
-const MIS: Repo[] = [
-  { id: "t1", nombre: "Guía de Laboratorio - Química", fecha: "2024-10-26", estado: "Publicado" },
-  { id: "t2", nombre: "Ejercicios de Álgebra", fecha: "2024-10-25", estado: "Borrador" },
-  { id: "t3", nombre: "Lecturas de Historia Moderna", fecha: "2024-09-10", estado: "Publicado" },
-];
-
 export default function MyRepositories() {
   const [subiendo, setSubiendo] = useState(false);
+  const { data, isLoading, isError } = useQuery<{ repos: Repo[] }>({
+    queryKey: ["repos", "my"],
+    queryFn: async () => {
+      const res = await fetch("/api/repos/my");
+      if (!res.ok) throw new Error("Failed to load");
+      return res.json();
+    },
+  });
 
   const onUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files?.length) return;
     setSubiendo(true);
-    setTimeout(() => setSubiendo(false), 1000);
+    setTimeout(() => { setSubiendo(false); toast.success("Archivos subidos"); }, 900);
   };
 
   return (
@@ -36,8 +41,23 @@ export default function MyRepositories() {
 
       <div className="rounded-2xl border border-neutral-200 p-4">
         <h3 className="text-base font-semibold text-contrast">Tus Repositorios</h3>
+        {isError && <div className="mt-2 rounded-lg border border-red-200 bg-red-50 p-2 text-sm text-red-700">No se pudo cargar.</div>}
         <div className="mt-3 space-y-3">
-          {MIS.map((r) => (
+          {isLoading && (
+            <>
+              {Array.from({ length: 4 }).map((_, i) => (
+                <div key={i} className="flex items-center justify-between rounded-xl border border-neutral-200 p-3">
+                  <div>
+                    <Skeleton className="h-4 w-56 bg-neutral-200" />
+                    <Skeleton className="mt-1 h-3 w-40 bg-neutral-200" />
+                  </div>
+                  <Skeleton className="h-7 w-40 rounded bg-neutral-200" />
+                </div>
+              ))}
+            </>
+          )}
+
+          {!isLoading && data?.repos.map((r) => (
             <div key={r.id} className="flex items-center justify-between rounded-xl border border-neutral-200 p-3">
               <div>
                 <div className="font-medium text-contrast">{r.nombre}</div>

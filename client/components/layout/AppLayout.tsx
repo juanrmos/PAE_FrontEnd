@@ -20,15 +20,15 @@ export default function AppLayout({ children, role: roleProp, hideSidebar }: { c
     <div className="min-h-screen bg-white text-black">
       {!hideSidebar && <Sidebar role={role} />}
       <div className={cn(hideSidebar ? "md:pl-0" : "md:pl-72")}>
-        <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-neutral-200 bg-white px-4 py-3 md:hidden">
+        {!hideSidebar && (<header className="sticky top-0 z-30 flex items-center gap-3 border-b border-neutral-200 bg-white px-4 py-3 md:hidden">
           <button aria-label="Abrir menú" className="rounded-lg p-2 hover:bg-neutral-100" onClick={() => setOpen(true)}>
             <Menu className="h-5 w-5" />
           </button>
           <div className={cn("inline-flex items-center gap-2 text-lg font-extrabold text-contrast")}>Pulse</div>
-        </header>
+        </header>)}
         <main className="px-4 py-6 md:px-8">{children}</main>
       </div>
-      {open && <Sidebar role={role} mobile onClose={() => setOpen(false)} />}
+      {open && !hideSidebar && <Sidebar role={role} mobile onClose={() => setOpen(false)} />}
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { MessageSquare, Users as UsersIcon, FileText, BarChart2, HelpCircle } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";

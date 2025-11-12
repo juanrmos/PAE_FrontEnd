@@ -46,7 +46,7 @@ const App = () => (
           <Route path="buscar" element={<SearchRepo />} />
           <Route path="favoritos" element={<Favorites />} />
         </Route>
-        <Route path="/grupos" element={<AppLayout><GroupsModuleLayout /></AppLayout>}>
+        <Route path="/grupos" element={<AppLayout hideSidebar><GroupsModuleLayout /></AppLayout>}>
           <Route index element={<MyCommunities />} />
           <Route path="publicos" element={<GroupsPublic />} />
           <Route path="foros" element={<Forums />} />

@@ -16,7 +16,6 @@ import GroupsModuleLayout from "./components/modules/Groups/ModuleLayout";
 import RepositoryModuleLayout from "./components/modules/Repository/ModuleLayout";
 import MyCommunities from "./pages/groups/MyCommunities";
 import Forums from "./pages/groups/Forums";
-import Resources from "./pages/groups/Resources";
 import GroupsPublic from "./pages/GroupsPublic";
 import GroupDetail from "./pages/GroupDetail";
 import Popular from "./pages/repository/Popular";

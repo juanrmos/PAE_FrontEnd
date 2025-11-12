@@ -1,5 +1,6 @@
 import { Link, NavLink, Outlet } from "react-router-dom";
-import { useMemo, useState } from "react";
+import { Link, NavLink, Outlet } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
 import { Home, Users } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -16,6 +17,14 @@ const MOCK_USERS: User[] = [
 
 export default function GroupsModuleLayout() {
   const [q, setQ] = useState("");
+  const [role, setRole] = useState<"docente" | "estudiante">(() => (localStorage.getItem("role") as any) || "estudiante");
+  useEffect(() => {
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === "role") setRole((e.newValue as any) || "estudiante");
+    };
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  }, []);
 
   const sugerencias = useMemo(() => {
     if (!q.trim()) return [] as User[];

@@ -38,6 +38,40 @@ export default function GroupDetail() {
     },
   });
 
+  const role = (localStorage.getItem("role") as "docente" | "estudiante") || "estudiante";
+  const [msg, setMsg] = useState("");
+  const listRef = useRef<HTMLDivElement>(null);
+  const chatQuery = useQuery<{ messages: { id: string; autor: string; rol: "docente" | "estudiante"; contenido: string; ts: number }[] }>({
+    queryKey: ["group", id, "chat"],
+    enabled: !!id && tab === "chat",
+    queryFn: async () => {
+      const res = await fetch(`/api/groups/${id}/chat`);
+      if (!res.ok) throw new Error("Failed to load chat");
+      return res.json();
+    },
+    refetchInterval: 3000,
+  });
+  useEffect(() => {
+    const el = listRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
+  }, [chatQuery.data?.messages?.length, tab]);
+
+  async function send() {
+    const contenido = msg.trim();
+    if (!contenido) return;
+    await fetch(`/api/groups/${id}/chat`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contenido,
+        rol: role,
+        autor: localStorage.getItem("name") || (role === "docente" ? "Prof. Carlos" : "Estudiante"),
+      }),
+    });
+    setMsg("");
+    chatQuery.refetch();
+  }
+
   return (
     <div className="space-y-6">
       <div className="overflow-hidden rounded-2xl border border-neutral-200">

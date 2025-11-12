@@ -48,6 +48,28 @@ export interface GroupsCountsResponse {
   foros: number;
 }
 
+// Chat types and in-memory store for realtime-ready polling
+export interface ChatMessage {
+  id: string;
+  autor: string;
+  rol: "estudiante" | "docente";
+  contenido: string;
+  ts: number;
+}
+
+export interface GroupChatResponse {
+  messages: ChatMessage[];
+}
+
+const messagesByGroup: Record<string, ChatMessage[]> = {
+  g1: [
+    { id: "m1", autor: "Prof. Carlos", rol: "docente", contenido: "Bienvenidos al grupo. Revisen la guía 1.", ts: Date.now() - 600000 },
+    { id: "m2", autor: "Juana", rol: "estudiante", contenido: "Gracias profe, ya la descargué.", ts: Date.now() - 300000 },
+  ],
+  g2: [],
+  g3: [],
+};
+
 // Demo in-memory dataset
 const myGroups: GroupSummary[] = [
   { id: "g1", nombre: "Matemáticas I", progreso: 86, materia: "Cálculo diferencial", descripcion: "Grupo para reforzar conceptos clave y resolver dudas semanales.", miembros: 18, documentos: 156, mensajes: 24 },
@@ -132,4 +154,28 @@ export const getGroupsCounts: RequestHandler = (_req, res) => {
     foros: 5,
   };
   res.json(response);
+};
+
+export const getGroupChat: RequestHandler = (req, res) => {
+  const id = req.params.id ?? "";
+  const messages = messagesByGroup[id] ?? [];
+  const response: GroupChatResponse = { messages };
+  res.json(response);
+};
+
+export const postGroupChat: RequestHandler = (req, res) => {
+  const id = req.params.id ?? "";
+  const { contenido, autor, rol } = req.body || {};
+  if (typeof contenido !== "string" || !contenido.trim()) {
+    return res.status(400).json({ error: "contenido requerido" });
+  }
+  const message: ChatMessage = {
+    id: Math.random().toString(36).slice(2),
+    autor: typeof autor === "string" && autor.trim() ? autor.slice(0, 80) : "Anónimo",
+    rol: rol === "docente" ? "docente" : "estudiante",
+    contenido: contenido.slice(0, 2000),
+    ts: Date.now(),
+  };
+  (messagesByGroup[id] ||= []).push(message);
+  res.json({ ok: true, message });
 };

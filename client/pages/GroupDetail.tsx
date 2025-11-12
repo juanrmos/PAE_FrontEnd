@@ -99,6 +99,61 @@ export default function GroupDetail() {
         </div>
       </div>
 
+      {tab === 'chat' && (
+        <section className="rounded-2xl border border-neutral-200 p-4">
+          <h2 className="mb-3 text-lg font-semibold text-contrast">Chat</h2>
+          <div ref={listRef} className="h-80 overflow-y-auto rounded-xl border border-neutral-200 bg-white p-3">
+            {chatQuery.isLoading ? (
+              <div className="space-y-2">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <div key={i} className="flex items-start gap-3">
+                    <Skeleton className="h-8 w-8 rounded-full bg-neutral-200" />
+                    <div className="flex-1">
+                      <Skeleton className="h-4 w-1/3 bg-neutral-200" />
+                      <Skeleton className="mt-1 h-3 w-2/3 bg-neutral-200" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              chatQuery.data?.messages?.length ? (
+                <ul className="space-y-3">
+                  {chatQuery.data.messages.map((m) => (
+                    <li key={m.id} className="flex items-start gap-3">
+                      <div className="mt-1 h-8 w-8 rounded-full bg-neutral-200" />
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 text-sm">
+                          <span className="font-semibold text-contrast">{m.autor}</span>
+                          <span className="rounded bg-neutral-100 px-2 py-0.5 text-xs text-neutral-700">{m.rol === 'docente' ? 'Docente' : 'Estudiante'}</span>
+                        </div>
+                        <div className="text-sm text-neutral-800">{m.contenido}</div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <div className="p-3 text-sm text-neutral-600">Aún no hay mensajes</div>
+              )
+            )}
+          </div>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              send();
+            }}
+            className="mt-3 flex gap-2"
+          >
+            <input
+              value={msg}
+              onChange={(e) => setMsg(e.target.value)}
+              placeholder="Escribe un mensaje..."
+              className="flex-1 rounded-xl border border-neutral-200 px-3 py-2 text-sm outline-none transition focus:border-contrast focus:ring-2 focus:ring-contrast/20"
+            />
+            <button type="submit" className="rounded-xl bg-contrast px-4 py-2.5 text-sm font-semibold text-white hover:bg-contrast/90">Enviar</button>
+          </form>
+        </section>
+      )}
+
       {tab === 'foros' && (
         <section className="rounded-2xl border border-neutral-200 p-4">
           <div className="mb-3 flex items-center justify-between">

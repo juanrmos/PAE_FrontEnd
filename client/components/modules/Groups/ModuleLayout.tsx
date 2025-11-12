@@ -1,5 +1,4 @@
 import { Link, NavLink, Outlet } from "react-router-dom";
-import { Link, NavLink, Outlet } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import { Home, Users } from "lucide-react";
 import { toast } from "sonner";

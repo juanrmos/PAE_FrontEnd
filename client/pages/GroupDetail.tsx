@@ -11,7 +11,7 @@ export default function GroupDetail() {
     return map[id ?? ""] || `Grupo ${id}`;
   }, [id]);
 
-  const [tab, setTab] = useState<"chat" | "archivos" | "foros" | "retos" | "analiticas">("foros");
+  const [tab, setTab] = useState<"chat" | "archivos" | "foros" | "retos" | "analiticas">("chat");
 
   const posts = [
     { id: "f1", titulo: "¿Consejos para probabilidad?", autor: "Juana", etiquetas: ["matemáticas"], votos: 3, respondida: false },

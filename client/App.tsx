@@ -49,7 +49,6 @@ const App = () => (
           <Route index element={<MyCommunities />} />
           <Route path="publicos" element={<GroupsPublic />} />
           <Route path="foros" element={<Forums />} />
-          <Route path="recursos" element={<Resources />} />
           <Route path=":id" element={<GroupDetail />} />
         </Route>
         <Route path="/docente" element={<AppLayout><Placeholder title="Dashboard Docente" /></AppLayout>} />

@@ -6,6 +6,12 @@ import { toast } from "sonner";
 
 export default function Manage() {
   const params = useParams();
+  const location = useLocation();
+  const from = (location.state as any)?.from as string | undefined;
+  let backTo = "/repositorio/mis";
+  let backLabel = "Volver a Mis Repositorios";
+  if (from?.startsWith("/repositorio/populares")) { backTo = "/repositorio/populares"; backLabel = "Volver a Populares"; }
+
   const [repoData, setRepoData] = useState({ titulo: "", materia: "", docente: "", estado: "Borrador" as "Borrador" | "Publicado" });
   const [files, setFiles] = useState<File[]>([]);
   const [links, setLinks] = useState<{ titulo: string; descripcion: string; url: string }[]>([

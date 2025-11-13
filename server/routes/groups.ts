@@ -70,6 +70,10 @@ const messagesByGroup: Record<string, ChatMessage[]> = {
   g3: [],
 };
 
+// Public forums (in-memory)
+export interface ForoPregunta { id: string; titulo: string; cuerpo: string; etiquetas: string[]; votos: number; respondida: boolean; creadaEn: number }
+const forumsPublic: ForoPregunta[] = [];
+
 // Demo in-memory dataset
 const myGroups: GroupSummary[] = [
   { id: "g1", nombre: "Matemáticas I", progreso: 86, materia: "Cálculo diferencial", descripcion: "Grupo para reforzar conceptos clave y resolver dudas semanales.", miembros: 18, documentos: 156, mensajes: 24 },
@@ -178,4 +182,24 @@ export const postGroupChat: RequestHandler = (req, res) => {
   };
   (messagesByGroup[id] ||= []).push(message);
   res.json({ ok: true, message });
+};
+
+export const getPublicForums: RequestHandler = (_req, res) => {
+  res.json({ posts: forumsPublic });
+};
+
+export const postPublicForum: RequestHandler = (req, res) => {
+  const { titulo, cuerpo, etiquetas } = req.body || {};
+  if (!titulo || !cuerpo) return res.status(400).json({ error: "faltan campos" });
+  const item: ForoPregunta = {
+    id: Math.random().toString(36).slice(2),
+    titulo: String(titulo).slice(0, 200),
+    cuerpo: String(cuerpo).slice(0, 2000),
+    etiquetas: Array.isArray(etiquetas) ? etiquetas.slice(0, 10).map((e) => String(e).slice(0, 30)) : [],
+    votos: 0,
+    respondida: false,
+    creadaEn: Date.now(),
+  };
+  forumsPublic.unshift(item);
+  res.json({ ok: true, item });
 };

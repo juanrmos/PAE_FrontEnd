@@ -1,18 +1,26 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import ForumsMock from "@/components/mocks/ForumsMock";
 
 type ForoPregunta = { id: string; titulo: string; cuerpo: string; etiquetas: string[]; votos: number; respondida: boolean; creadaEn: number };
 
 export default function Forums() {
-  const [foro, setForo] = useState<ForoPregunta[]>([
-    { id: "f1", titulo: "¿Consejos para probabilidad?", cuerpo: "Busco ejercicios recomendados.", etiquetas: ["matemáticas"], votos: 3, respondida: false, creadaEn: Date.now() - 1000 * 60 * 60 },
-    { id: "f2", titulo: "Álgebra lineal: matrices", cuerpo: "¿Cómo iniciar?", etiquetas: ["álgebra"], votos: 8, respondida: true, creadaEn: Date.now() - 1000 * 60 * 60 * 5 },
-  ]);
+  const { data, isLoading, isError } = useQuery<{ posts: ForoPregunta[] }>({
+    queryKey: ["groups", "forums", "public"],
+    queryFn: async () => {
+      const res = await fetch("/api/groups/forums/public");
+      if (!res.ok) throw new Error("Failed to load");
+      return res.json();
+    },
+  });
+  const [foro, setForo] = useState<ForoPregunta[]>([]);
   const [filtro, setFiltro] = useState<"recientes" | "sin-responder" | "populares">("recientes");
   const [q, setQ] = useState("");
   const [nuevo, setNuevo] = useState({ titulo: "", cuerpo: "", etiquetas: "" });
 
   const lista = useMemo(() => {
-    let arr = foro.filter((p) => p.titulo.toLowerCase().includes(q.toLowerCase()) || p.etiquetas.some((t) => t.includes(q.toLowerCase())));
+    const base = (data?.posts ?? foro);
+    let arr = base.filter((p) => p.titulo.toLowerCase().includes(q.toLowerCase()) || p.etiquetas.some((t) => t.includes(q.toLowerCase())));
     if (filtro === "sin-responder") arr = arr.filter((p) => !p.respondida);
     if (filtro === "populares") arr = [...arr].sort((a, b) => b.votos - a.votos);
     if (filtro === "recientes") arr = [...arr].sort((a, b) => b.creadaEn - a.creadaEn);
@@ -34,6 +42,24 @@ export default function Forums() {
       </div>
 
       <div className="mt-4 space-y-2">
+        {isError && <div className="rounded-lg border border-red-200 bg-red-50 p-2 text-sm text-red-700">No se pudo cargar.</div>}
+        {isLoading && (
+          <>
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="h-20 rounded-xl border border-neutral-200 bg-neutral-100" />
+            ))}
+          </>
+        )}
+        {!isLoading && lista.length === 0 && (
+          import.meta.env.DEV ? (
+            <ForumsMock />
+          ) : (
+            <div className="rounded-2xl border border-neutral-200 p-6 text-center">
+              <div className="text-sm text-neutral-700">Sé el primero en proponer una pregunta.</div>
+              <a href="#proponer" className="mt-3 inline-flex items-center justify-center rounded-xl bg-brand px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand/90">Proponer Pregunta</a>
+            </div>
+          )
+        )}
         {lista.map((p) => (
           <article key={p.id} className="flex items-start justify-between rounded-xl border border-neutral-200 p-3">
             <div className="mr-4">
@@ -62,7 +88,7 @@ export default function Forums() {
         ))}
       </div>
 
-      <div className="mt-4 rounded-2xl border border-neutral-200 p-4 bg-white">
+      <div id="proponer" className="mt-4 rounded-2xl border border-neutral-200 p-4 bg-white">
         <div className="text-sm font-semibold text-neutral-700">Proponer Pregunta</div>
         <div className="mt-2 grid gap-2 md:grid-cols-2">
           <input value={nuevo.titulo} onChange={(e) => setNuevo((v) => ({ ...v, titulo: e.target.value }))} placeholder="Título" className="rounded-lg border border-neutral-200 px-3 py-2 text-sm" />

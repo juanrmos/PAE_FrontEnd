@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Search as SearchIcon, Star } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -19,6 +19,7 @@ export default function Search() {
     return DATA.filter((r) => r.titulo.toLowerCase().includes(s) || r.docente.toLowerCase().includes(s) || r.temas.some((t) => t.toLowerCase().includes(s)));
   }, [q]);
 
+  const location = useLocation();
   return (
     <div>
       <h2 className="text-lg font-semibold text-contrast">Buscador Global</h2>
@@ -36,7 +37,7 @@ export default function Search() {
               <div className="mt-1 flex flex-wrap gap-1">{r.temas.map((t) => <span key={t} className="rounded-full bg-neutral-100 px-2 py-0.5 text-xs text-neutral-700">#{t}</span>)}</div>
             </div>
             <div className="flex items-center gap-2">
-              <Link to={`/repositorio/ver/${r.id}`} className="rounded-lg bg-brand px-3 py-1.5 text-sm font-semibold text-white hover:bg-brand/90">Ver Recursos</Link>
+              <Link to={`/repositorio/ver/${r.id}`} state={{ from: location.pathname }} className="rounded-lg bg-brand px-3 py-1.5 text-sm font-semibold text-white hover:bg-brand/90">Ver Recursos</Link>
               <button onClick={() => setFavs((f) => ({ ...f, [r.id]: !f[r.id] }))} className="rounded-lg p-2 hover:bg-neutral-100" aria-label="Marcar favorito">
                 <Star className={cn("h-5 w-5", favs[r.id] ? "fill-brand stroke-brand" : "stroke-neutral-400")} />
               </button>

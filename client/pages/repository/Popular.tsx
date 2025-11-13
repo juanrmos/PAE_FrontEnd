@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Download, Eye, Search, Star } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
@@ -28,6 +28,7 @@ export default function Popular() {
     return base.filter((r) => r.titulo.toLowerCase().includes(s) || r.docente.toLowerCase().includes(s) || r.temas.some((t) => t.toLowerCase().includes(s)));
   }, [q, data]);
 
+  const location = useLocation();
   return (
     <div>
       <h2 className="text-lg font-semibold text-contrast">Repositorios Populares</h2>
@@ -84,7 +85,7 @@ export default function Popular() {
                 <span className="inline-flex items-center gap-1"><Download className="h-4 w-4" /> {r.descargas} descargas</span>
                 <span className="inline-flex items-center gap-1"><Eye className="h-4 w-4" /> {r.vistas} vistas</span>
               </div>
-              <Link to={`/repositorio/ver/${r.id}`} className="inline-flex items-center justify-center rounded-xl bg-brand px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand/90">Ver Recursos</Link>
+              <Link to={`/repositorio/ver/${r.id}`} state={{ from: location.pathname }} className="inline-flex items-center justify-center rounded-xl bg-brand px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand/90">Ver Recursos</Link>
             </article>
           ))}
         </div>

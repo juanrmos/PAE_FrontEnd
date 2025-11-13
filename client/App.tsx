@@ -22,6 +22,7 @@ import Popular from "./pages/repository/Popular";
 import MyRepositories from "./pages/repository/MyRepositories";
 import Manage from "./pages/repository/Manage";
 import SearchRepo from "./pages/repository/Search";
+import RepoView from "./pages/repository/View";
 import Favorites from "./pages/repository/Favorites";
 
 const queryClient = new QueryClient();
@@ -44,6 +45,7 @@ const App = () => (
           <Route path="gestionar/:id" element={<Manage />} />
           <Route path="buscar" element={<SearchRepo />} />
           <Route path="favoritos" element={<Favorites />} />
+          <Route path="ver/:id" element={<RepoView />} />
         </Route>
         <Route path="/grupos" element={<AppLayout hideSidebar><GroupsModuleLayout /></AppLayout>}>
           <Route index element={<MyCommunities />} />

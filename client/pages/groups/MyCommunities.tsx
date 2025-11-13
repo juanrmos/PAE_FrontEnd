@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -13,6 +13,8 @@ type Group = {
   mensajes?: number;
 };
 
+import GroupsMock from "@/components/mocks/GroupsMock";
+
 export default function MyCommunities() {
   const color = (p: number) => (p >= 80 ? "bg-green-600" : p >= 50 ? "bg-brand" : "bg-[#D93636]");
   const width = (p: number) => `${Math.min(100, Math.max(0, p))}%`;
@@ -25,6 +27,8 @@ export default function MyCommunities() {
       return res.json();
     },
   });
+
+  const location = useLocation();
 
   return (
     <div>
@@ -54,8 +58,8 @@ export default function MyCommunities() {
           </>
         )}
 
-        {!isLoading && data?.groups.map((g) => (
-          <Link key={g.id} to={`/grupos/${g.id}`} className="overflow-hidden rounded-2xl border border-neutral-200 hover:bg-neutral-50">
+        {!isLoading && data?.groups && data.groups.length > 0 && data.groups.map((g) => (
+          <Link key={g.id} to={`/grupos/${g.id}`} state={{ from: location.pathname }} className="overflow-hidden rounded-2xl border border-neutral-200 hover:bg-neutral-50">
             <div className="h-16 w-full bg-gradient-to-r from-contrast to-brand" />
             <div className="p-4">
               <div className="font-semibold text-contrast">{g.nombre}</div>
@@ -69,7 +73,7 @@ export default function MyCommunities() {
               <div className="mt-3 flex items-center justify-between text-xs text-neutral-700">
                 <div className="flex items-center gap-3">
                   <span>💬 {g.mensajes ?? 0}</span>
-                  <span>🗂�� {g.documentos ?? 0}</span>
+                  <span>🗂️ {g.documentos ?? 0}</span>
                   <span>👥 {g.miembros ?? 0}</span>
                 </div>
                 <span className="rounded-lg bg-contrast/10 px-2 py-0.5 font-semibold text-contrast">Propietario</span>
@@ -77,6 +81,17 @@ export default function MyCommunities() {
             </div>
           </Link>
         ))}
+
+        {!isLoading && (!data?.groups || data.groups.length === 0) && (
+          import.meta.env.DEV ? (
+            <GroupsMock />
+          ) : (
+            <div className="col-span-full rounded-2xl border border-neutral-200 p-6 text-center">
+              <div className="text-sm text-neutral-700">Aún no eres miembro de ningún grupo.</div>
+              <Link to="/grupos/publicos" className="mt-3 inline-flex items-center justify-center rounded-xl bg-brand px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand/90">Únete a una Comunidad Pública</Link>
+            </div>
+          )
+        )}
       </div>
     </div>
   );

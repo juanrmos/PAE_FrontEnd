@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { MessageSquare, Users as UsersIcon, FileText, BarChart2, HelpCircle } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -72,8 +72,18 @@ export default function GroupDetail() {
     chatQuery.refetch();
   }
 
+  const location = useLocation();
+  const from = (location.state as any)?.from as string | undefined;
+  let backTo = "/grupos";
+  let backLabel = "Volver al Módulo";
+  if (from?.startsWith("/grupos/publicos")) { backTo = "/grupos/publicos"; backLabel = "Volver a Comunidades Públicas"; }
+  else if (from === "/grupos" || from?.startsWith("/grupos")) { backTo = "/grupos"; backLabel = "Volver a Mis Comunidades"; }
+
   return (
     <div className="space-y-6">
+      <div>
+        <Link to={backTo} className="inline-flex items-center gap-2 text-sm font-semibold text-contrast hover:opacity-90">← {backLabel}</Link>
+      </div>
       <div className="overflow-hidden rounded-2xl border border-neutral-200">
         <div className="bg-contrast p-5 text-white">
           <div className="flex items-center justify-between">

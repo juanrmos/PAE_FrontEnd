@@ -43,8 +43,7 @@ export default function RepositoryModuleLayout() {
         <div className="relative flex flex-col gap-4 border-b border-neutral-200 bg-white px-4 py-6 md:px-8">
           <div className="pointer-events-none absolute right-4 top-0 h-24 w-24 rounded-full bg-[radial-gradient(theme(colors.brand.DEFAULT)_0%,transparent_60%)] opacity-30" />
           <div className="flex flex-col justify-between gap-3 md:flex-row md:items-center">
-            <div className="flex items-center gap-3">
-              <Link to="/home" className="inline-flex items-center gap-2 text-sm font-semibold text-contrast hover:opacity-90"><Home className="h-4 w-4" /> Volver a Inicio</Link>
+            <div>
               <h1 className="text-xl font-bold text-contrast">Repositorio Académico</h1>
             </div>
             <div className="text-sm text-neutral-700">Rol: <span className="font-semibold text-contrast">{role === "docente" ? "Docente" : "Estudiante"}</span></div>

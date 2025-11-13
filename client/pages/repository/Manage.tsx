@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { FileText, Link2, Trash2, UploadCloud } from "lucide-react";
+import { useState } from "react";
 import { toast } from "sonner";
 
 export default function Manage() {

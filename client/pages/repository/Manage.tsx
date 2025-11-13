@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link, useParams, useLocation } from "react-router-dom";
 import { FileText, Link2, Trash2, UploadCloud } from "lucide-react";
-import { useState } from "react";
 import { toast } from "sonner";
 
 export default function Manage() {
@@ -31,9 +30,13 @@ export default function Manage() {
   const removeFile = (i: number) => setFiles((arr) => arr.filter((_, idx) => idx !== i));
 
   return (
-    <div className="rounded-2xl border border-neutral-200 p-6">
-      <h2 className="text-lg font-semibold text-contrast">Gestión de Repositorio</h2>
-      {params.id && <div className="mb-2 text-xs text-neutral-600">Editando: {params.id}</div>}
+    <div className="space-y-4">
+      <div>
+        <Link to={backTo} className="inline-flex items-center gap-2 text-sm font-semibold text-contrast hover:opacity-90">← {backLabel}</Link>
+      </div>
+      <div className="rounded-2xl border border-neutral-200 p-6">
+        <h2 className="text-lg font-semibold text-contrast">Gestión de Repositorio</h2>
+        {params.id && <div className="mb-2 text-xs text-neutral-600">Editando: {params.id}</div>}
 
       <div className="mt-4 grid gap-4 md:grid-cols-2">
         <input value={repoData.titulo} onChange={(e) => setRepoData((d) => ({ ...d, titulo: e.target.value }))} placeholder="Título del Repositorio" className="rounded-xl border border-neutral-200 px-4 py-3 text-sm" />
@@ -88,6 +91,7 @@ export default function Manage() {
 
       <div className="mt-6 text-right">
         <button onClick={async () => { try { const res = await fetch('/api/repos/save', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...repoData, files: files.map(f=>f.name), links }) }); if (!res.ok) throw new Error(); toast.success('Repositorio guardado'); } catch { toast.error('No se pudo guardar'); } }} className="rounded-xl bg-brand px-5 py-3 text-base font-semibold text-white hover:bg-brand/90">Guardar Repositorio</button>
+      </div>
       </div>
     </div>
   );

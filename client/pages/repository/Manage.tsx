@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { Link, useParams, useLocation } from "react-router-dom";
 import { FileText, Link2, Trash2, UploadCloud } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";

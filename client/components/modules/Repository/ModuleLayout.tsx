@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { LibraryBig } from "lucide-react";
+import { Home, LibraryBig } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default function RepositoryModuleLayout() {

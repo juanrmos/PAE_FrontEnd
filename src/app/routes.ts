@@ -1,9 +1,17 @@
 // src/app/routes.ts
-import { Home } from '../pages/Home';
-import { Login } from '../pages/Login';
-import { Placeholder } from '../pages/Placeholder'; // Componente temporal
+import Home from '../pages/Home';       // Asegúrate de que Home.tsx tenga "export default"
+import Login from '../pages/Login';     // Asegúrate de que Login.tsx tenga "export default"
+import Placeholder from '../pages/Placeholder';
 
-export const routes = [
+// Definimos una interfaz para que TS sepa qué forma tiene una ruta
+interface AppRoute {
+  path: string;
+  element: React.ComponentType; // El componente en sí
+  exact?: boolean;
+  requiresAuth: boolean;
+}
+
+export const routes: AppRoute[] = [
   {
     path: '/',
     element: Login,
@@ -22,5 +30,4 @@ export const routes = [
     exact: false,
     requiresAuth: true,
   },
-  // Aquí se añadirán más rutas de módulos (Comunidades, Repositorio)
 ];

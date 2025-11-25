@@ -1,0 +1,15 @@
+.groupsGrid {
+  @apply grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3;
+}
+
+.groupCard {
+  @apply border-l-4 border-l-brand-action hover:shadow-md transition-all;
+}
+
+.memberCount {
+  @apply flex items-center gap-2 text-sm text-muted-foreground bg-neutral-50 px-3 py-1 rounded-full w-fit;
+}
+
+.createButton {
+  @apply gap-2 bg-primary-contrast hover:bg-primary-contrast/90;
+}

@@ -1,0 +1,48 @@
+.repositoryGrid {
+  @apply grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3;
+}
+
+.searchBarContainer {
+  @apply relative flex items-center w-full max-w-2xl mx-auto mb-8;
+}
+
+.resourceCard {
+  @apply transition-all duration-300 hover:shadow-md hover:-translate-y-1 border-neutral-200;
+}
+
+.cardBadge {
+  @apply bg-neutral-100 text-neutral-600 hover:bg-neutral-200;
+}
+
+.actionButton {
+  @apply w-full bg-brand-action hover:bg-brand-action/90 text-white;
+}
+
+.formContainer {
+  @apply max-w-2xl mx-auto space-y-6 p-1;
+}
+
+.dropzone {
+  @apply border-2 border-dashed border-neutral-300 rounded-xl p-10 text-center cursor-pointer transition-colors hover:border-brand-action hover:bg-brand-action/5;
+}
+
+.dropzoneActive {
+  @apply border-brand-action bg-brand-action/10;
+}
+
+.uploadedFile {
+  @apply flex items-center justify-between p-3 bg-neutral-50 rounded-lg border border-neutral-200;
+}
+
+/* Estilos para Mis Repositorios (Acciones) */
+.actionRow {
+  @apply flex items-center gap-2 mt-4;
+}
+
+.editButton {
+  @apply flex-1 bg-neutral-100 text-neutral-700 hover:bg-neutral-200;
+}
+
+.deleteButton {
+  @apply bg-white text-red-500 border-red-200 hover:bg-red-50 hover:border-red-300;
+}

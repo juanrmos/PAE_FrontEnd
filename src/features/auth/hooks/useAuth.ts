@@ -1,4 +1,3 @@
-// src/features/auth/hooks/useAuth.ts
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
@@ -6,8 +5,8 @@ import {
   register as registerService, 
   type LoginCredentials, 
   type RegisterData 
-} from "../services/authServices";
-import { useToast } from "../../../hooks/useToast"; // Tu hook migrado
+} from "../services/authServices"; // Asegúrate que coincida con el nombre de tu archivo (singular)
+import { useToast } from "../../../hooks/useToast";
 
 export const useAuth = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -19,34 +18,31 @@ export const useAuth = () => {
     try {
       const response = await loginService(credentials);
       
-      // 1. Guardar sesión (Persistencia básica)
+      // 1. Guardar sesión
       localStorage.setItem("token", response.token);
       localStorage.setItem("role", response.user.role);
       localStorage.setItem("user", JSON.stringify(response.user));
 
-      // 2. Feedback al usuario
+      // 2. Feedback
       toast({
-        title: "¡Bienvenido!",
-        description: `Has iniciado sesión como ${response.user.role}`,
+        title: "Bienvenido",
+        description: `Ingresaste como ${response.user.role}`,
       });
 
-      // 3. Redirección inteligente según rol
-      // Esto cumple con el requisito de vistas por rol
+      
       if (response.user.role === "docente") {
-        navigate("/repositorio/mis-repos"); // Vista default docente
+        navigate("/docente");
       } else {
-        navigate("/home"); // Vista default estudiante
+        navigate("/estudiante"); 
       }
       
-      // Forzar recarga para que el Sidebar actualice el rol (solución temporal simple)
-      // En una app más avanzada usaríamos un Context, pero esto funciona perfecto por ahora.
-      window.dispatchEvent(new Event("storage"));
+      window.dispatchEvent(new Event("storage")); //corregir
 
     } catch (error) {
       toast({
         variant: "destructive",
         title: "Error de acceso",
-        description: error instanceof Error ? error.message : "Ocurrió un error inesperado",
+        description: "Credenciales incorrectas o servicio no disponible.",
       });
     } finally {
       setIsLoading(false);
@@ -70,6 +66,11 @@ export const useAuth = () => {
       navigate("/home");
       window.dispatchEvent(new Event("storage"));
 
+      if (response.user.role === "docente") {
+          navigate("/docente");
+      } else {
+          navigate("/estudiante");
+      }
     } catch (error) {
       toast({
         variant: "destructive",
@@ -85,13 +86,18 @@ export const useAuth = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
     localStorage.removeItem("user");
+    
     navigate("/");
+    
     toast({
       title: "Sesión cerrada",
       description: "Has salido de tu cuenta correctamente",
     });
+    
+    window.dispatchEvent(new Event("storage"));
   };
 
+  
   return {
     login,
     register,

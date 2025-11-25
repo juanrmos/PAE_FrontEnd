@@ -1,20 +1,59 @@
-// tailwind.config.js
-
-module.exports = {
+/** @type {import('tailwindcss').Config} */
+export default {
   content: [
-    // Asegura que Tailwind escanee todos tus archivos de código fuente
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
-      // Definición de la paleta de colores de PAE
       colors: {
-        'brand-action': '#FF7A00', // Naranja (Botones Primarios, Acentos)
-        'primary-contrast': '#1E3A8A', // Azul Oscuro (Headers, Sidebar, Texto)
+        // 1. Colores del Sistema (Mapeados a tus variables CSS de index.css)
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
+
+        // 2. Tus Colores de Marca (PAE)
+        'brand-action': '#FF7A00',      // Naranja
+        'primary-contrast': '#1E3A8A',  // Azul Oscuro
         'neutral-black': '#000000',
         'neutral-white': '#FFFFFF',
-        // Puedes agregar más colores aquí si es necesario
+        'success-progress': '#22C55E',  // Verde
+        'danger-progress': '#EF4444',   // Rojo
+      },
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
       },
     },
   },

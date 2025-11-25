@@ -1,6 +1,6 @@
-// src/features/auth/services/authService.ts
+import { api } from "../../../services/api";
 
-// 1. Definimos las "formas" (Interfaces) de los datos
+// --- Interfaces ---
 export interface LoginCredentials {
   email: string;
   password: string;
@@ -10,14 +10,14 @@ export interface RegisterData {
   name: string;
   email: string;
   password: string;
-  isTeacher: boolean; // Campo clave para el registro
+  isTeacher: boolean;
 }
 
 export interface AuthUser {
   id: string;
   name: string;
   email: string;
-  role: 'estudiante' | 'docente' | 'admin';
+  role: "estudiante" | "docente" | "admin";
   avatar?: string;
 }
 
@@ -26,47 +26,91 @@ export interface AuthResponse {
   token: string;
 }
 
-// 2. Simulación de API (Mock)
-// TODO: Reemplazar con axios.post('/api/auth/login') en la Fase de Conexión Real
-export const login = async (credentials: LoginCredentials): Promise<AuthResponse> => {
+// --- 1. Lógica MOCK (Simulación) ---
+
+const loginMock = async (credentials: LoginCredentials): Promise<AuthResponse> => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      // Simulación básica de error
       if (credentials.password === "error") {
-        reject(new Error("Credenciales inválidas"));
+        reject(new Error("Credenciales inválidas (Mock)"));
         return;
       }
 
-      // Lógica de Rol Inteligente para pruebas
       const isTeacher = credentials.email.includes("docente") || credentials.email.includes("profesor");
-      const role = isTeacher ? 'docente' : 'estudiante';
-
+      
       resolve({
         user: {
-          id: "12345",
-          name: isTeacher ? "Profesor Carlos" : "Juan Estudiante",
+          id: "mock-123",
+          name: isTeacher ? "Profesor Mock" : "Estudiante Mock",
           email: credentials.email,
-          role: role,
+          role: isTeacher ? "docente" : "estudiante",
           avatar: "https://github.com/shadcn.png",
         },
-        token: "fake-jwt-token-123",
+        token: "mock-jwt-token-login",
       });
-    }, 1500); // 1.5 segundos de carga falsa
+    }, 1000);
   });
 };
 
-export const register = async (data: RegisterData): Promise<AuthResponse> => {
+const registerMock = async (data: RegisterData): Promise<AuthResponse> => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({
         user: {
-          id: "67890",
+          id: "mock-new-user",
           name: data.name,
           email: data.email,
-          role: data.isTeacher ? 'docente' : 'estudiante',
+          role: data.isTeacher ? "docente" : "estudiante",
+          avatar: "https://github.com/shadcn.png",
         },
-        token: "fake-jwt-token-456",
+        token: "mock-jwt-token-register",
       });
     }, 1500);
   });
+};
+
+// --- 2. Lógica REAL (API) ---
+
+const loginApi = async (credentials: LoginCredentials): Promise<AuthResponse> => {
+  const response = await api.post<AuthResponse>("/auth/login", credentials);
+  return response.data;
+};
+
+const registerApi = async (data: RegisterData): Promise<AuthResponse> => {
+  const response = await api.post<AuthResponse>("/auth/register", data);
+  return response.data;
+};
+
+// --- 3. Funciones Principales con FALLBACK ---
+
+export const login = async (credentials: LoginCredentials): Promise<AuthResponse> => {
+  // A. Mock Forzado
+  if (import.meta.env.VITE_USE_MOCKS === "true") {
+    console.log("🔶 Modo Mock: Login");
+    return loginMock(credentials);
+  }
+
+  // B. API Real + Fallback
+  try {
+    return await loginApi(credentials);
+  } catch (error) {
+    console.warn("🔴 Fallo API Login. Usando Mock.", error);
+    return loginMock(credentials);
+  }
+};
+
+export const register = async (data: RegisterData): Promise<AuthResponse> => {
+  // A. Mock Forzado
+  if (import.meta.env.VITE_USE_MOCKS === "true") {
+    console.log("🔶 Modo Mock: Registro");
+    return registerMock(data);
+  }
+
+  // B. API Real + Fallback
+  try {
+    return await registerApi(data);
+  } catch (error) {
+    console.warn("🔴 Fallo API Registro. Usando Mock.", error);
+    return registerMock(data);
+  }
 };

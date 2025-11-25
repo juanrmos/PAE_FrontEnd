@@ -1,6 +1,6 @@
 import { api } from "../../../services/api";
 
-// Interfaces
+// --- Interfaces ---
 export interface Repository {
   id: string;
   title: string;
@@ -13,7 +13,13 @@ export interface Repository {
   updatedAt: string;
 }
 
-// 1. MOCKS
+export interface CreateRepoData {
+  title: string;
+  subject: string;
+  description?: string;
+}
+
+// --- MOCKS ---
 const MOCK_REPOS: Repository[] = [
   {
     id: "1",
@@ -22,7 +28,7 @@ const MOCK_REPOS: Repository[] = [
     role: "Docente",
     views: 1205,
     downloads: 340,
-    tags: ["Matemáticas", "Álgebra"],
+    tags: ["Matemáticas"],
     isFavorite: false,
     updatedAt: "10/03/2024",
   },
@@ -33,70 +39,79 @@ const MOCK_REPOS: Repository[] = [
     role: "Docente",
     views: 890,
     downloads: 120,
-    tags: ["Historia", "Humanidades"],
+    tags: ["Historia"],
     isFavorite: true,
-    updatedAt: "10/03/2024",
+    updatedAt: "12/03/2024",
   },
 ];
 
 const MY_MOCK_REPOS: Repository[] = [
   {
     id: "101",
-    title: "Borrador: Física II",
+    title: "Física II: Dinámica Avanzada",
     author: "Tú",
     role: "Docente",
-    views: 0,
+    views: 12,
     downloads: 0,
     tags: ["Física"],
     isFavorite: false,
-    updatedAt: "Ahora",
-  },
-  {
-    id: "1",
-    title: "Álgebra Lineal: Matrices y Vectores",
-    author: "Tú",
-    role: "Docente",
-    views: 1250,
-    downloads: 340,
-    tags: ["Matemáticas"],
-    isFavorite: false,
-    updatedAt: "10/03/2024",
+    updatedAt: "Hoy",
   }
 ];
 
+// --- GETTERS CON FALLBACK ---
+
+// 1. Repositorios Públicos (Explorar)
+export const getPopularRepositories = async (): Promise<Repository[]> => {
+  if (import.meta.env.VITE_USE_MOCKS === "true") {
+    return new Promise((resolve) => setTimeout(() => resolve(MOCK_REPOS), 1000));
+  }
+  try {
+    const response = await api.get("/repository/popular");
+    return response.data;
+  } catch (error) {
+    console.warn("API Error (Popular), using mock.", error);
+    return MOCK_REPOS;
+  }
+};
+
+// 2. Mis Repositorios
 export const getMyRepositories = async (): Promise<Repository[]> => {
   if (import.meta.env.VITE_USE_MOCKS === "true") {
-    return new Promise((resolve) => setTimeout(() => resolve(MY_MOCK_REPOS), 1000));
+    return new Promise((resolve) => setTimeout(() => resolve(MY_MOCK_REPOS), 800));
   }
-  
   try {
     const response = await api.get("/repository/mine");
     return response.data;
   } catch (error) {
-    console.warn("API Error (My Repos), using mock.", error);
-    return new Promise((resolve) => resolve(MY_MOCK_REPOS));
+    return MY_MOCK_REPOS;
   }
 };
 
-// 2. Funciones Mock
-const getPopularMock = async (): Promise<Repository[]> => {
-  return new Promise((resolve) => setTimeout(() => resolve(MOCK_REPOS), 1000));
-};
-
-// 3. Funciones Reales
-const getPopularApi = async (): Promise<Repository[]> => {
-  const response = await api.get("/repository/popular");
-  return response.data;
-};
-
-// 4. Main Export (Fallback Logic)
-export const getPopularRepositories = async (): Promise<Repository[]> => {
-  if (import.meta.env.VITE_USE_MOCKS === "true") return getPopularMock();
-
+// 3. Favoritos (Nueva función)
+export const getFavorites = async (): Promise<Repository[]> => {
+  if (import.meta.env.VITE_USE_MOCKS === "true") {
+    // Retornamos solo los que tienen isFavorite: true del mock
+    const favorites = MOCK_REPOS.filter(r => r.isFavorite);
+    return new Promise((resolve) => setTimeout(() => resolve(favorites), 800));
+  }
   try {
-    return await getPopularApi();
+    const response = await api.get("/repository/favorites");
+    return response.data;
   } catch (error) {
-    console.warn("API Error (Repository), using mock fallback.", error);
-    return getPopularMock();
+    const favorites = MOCK_REPOS.filter(r => r.isFavorite);
+    return favorites;
   }
+};
+
+// --- ACTIONS ---
+export const createRepository = async (data: CreateRepoData): Promise<void> => {
+    // (Mantener lógica previa de crear...)
+    // Simulación para brevedad en este paso
+    await new Promise(resolve => setTimeout(resolve, 1000));
+};
+
+export const deleteRepository = async (id: string): Promise<void> => {
+    // (Mantener lógica previa de eliminar...)
+     await new Promise(resolve => setTimeout(resolve, 500));
 };

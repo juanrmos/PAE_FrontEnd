@@ -1,48 +1,57 @@
-.repositoryGrid {
-  @apply grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3;
+/* Contenedor principal de la lista */
+.gridContainer {
+  /* Cambiamos de grid a flex column para una lista vertical */
+  @apply flex flex-col gap-4;
 }
 
-.searchBarContainer {
-  @apply relative flex items-center w-full max-w-2xl mx-auto mb-8;
+/* --- NUEVO DISEÑO DE TARJETA --- */
+
+/* El contenedor de la tarjeta ahora es horizontal */
+.cardHorizontal {
+  @apply flex items-center p-4 gap-4 transition-all duration-200 hover:shadow-md border-neutral-200;
 }
 
-.resourceCard {
-  @apply transition-all duration-300 hover:shadow-md hover:-translate-y-1 border-neutral-200;
+/* Catanedor del ícono izquierdo */
+.iconContainer {
+  @apply flex-shrink-0 h-12 w-12 rounded-xl bg-brand-action/10 flex items-center justify-center text-brand-action;
 }
 
-.cardBadge {
-  @apply bg-neutral-100 text-neutral-600 hover:bg-neutral-200;
+/* Contenedor central de texto */
+.contentContainer {
+  @apply flex-1 flex flex-col gap-1 overflow-hidden;
 }
 
-.actionButton {
-  @apply w-full bg-brand-action hover:bg-brand-action/90 text-white;
+/* Título */
+.cardTitle {
+  @apply text-base font-semibold text-primary-contrast truncate;
 }
 
-.formContainer {
-  @apply max-w-2xl mx-auto space-y-6 p-1;
+/* Subtítulo (Tags separados por puntos) */
+.cardTags {
+  @apply text-sm text-muted-foreground truncate flex items-center gap-2;
 }
 
-.dropzone {
-  @apply border-2 border-dashed border-neutral-300 rounded-xl p-10 text-center cursor-pointer transition-colors hover:border-brand-action hover:bg-brand-action/5;
+/* Separador de tags (el puntito) */
+.tagSeparator {
+  @apply h-1 w-1 rounded-full bg-neutral-300;
 }
 
-.dropzoneActive {
-  @apply border-brand-action bg-brand-action/10;
+/* Metadata inferior (Autor y Fecha) */
+.cardMeta {
+  @apply text-xs text-muted-foreground mt-1 flex items-center gap-2;
 }
 
-.uploadedFile {
-  @apply flex items-center justify-between p-3 bg-neutral-50 rounded-lg border border-neutral-200;
+/* Contenedor de acciones (derecha) */
+.actionContainer {
+  @apply flex-shrink-0 flex items-center gap-2 ml-4;
 }
 
-/* Estilos para Mis Repositorios (Acciones) */
-.actionRow {
-  @apply flex items-center gap-2 mt-4;
+/* Botón principal (View / Gestionar) */
+.viewButton {
+  @apply bg-brand-action hover:bg-brand-action/90 text-white font-medium px-6 rounded-lg h-9 text-sm;
 }
 
-.editButton {
-  @apply flex-1 bg-neutral-100 text-neutral-700 hover:bg-neutral-200;
-}
-
-.deleteButton {
-  @apply bg-white text-red-500 border-red-200 hover:bg-red-50 hover:border-red-300;
+/* Botón secundario (Eliminar para docentes) */
+.deleteIconButton {
+  @apply text-red-500 hover:text-red-700 hover:bg-red-50 h-9 w-9 p-0;
 }

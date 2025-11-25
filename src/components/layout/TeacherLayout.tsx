@@ -1,12 +1,13 @@
 import { useState } from "react";
+import { useLocation } from "react-router-dom"; // Importante
 import { Menu } from "lucide-react";
 import { Toaster } from "../ui/Toaster";
 import { Sidebar } from "./Sidebar";
 import { Sheet, SheetContent, SheetTrigger } from "../../desingSystem/primitives";
 import { Button } from "../../desingSystem/primitives";
 import { useIsMobile } from "../../hooks/useMobile";
-// ✅ IMPORTAMOS LA CONFIGURACIÓN DEL MENÚ
-import { TEACHER_MENU } from "../../config/menus"; 
+// Importamos todos los menús
+import { TEACHER_MAIN_MENU, REPO_MENU_TEACHER, GROUPS_MENU_TEACHER } from "../../config/menus";
 
 interface Props {
   children: React.ReactNode;
@@ -15,16 +16,33 @@ interface Props {
 export const TeacherLayout = ({ children }: Props) => {
   const isMobile = useIsMobile();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const location = useLocation(); // Hook para leer la URL actual
+
+  // --- LÓGICA DE SELECCIÓN DE MENÚ ---
+  let currentMenu = TEACHER_MAIN_MENU;
+  let sidebarTitle = "Docente";
+  let backRoute = undefined;
+
+  if (location.pathname.includes("/repositorios")) {
+    currentMenu = REPO_MENU_TEACHER;
+    sidebarTitle = "Repositorio";
+    backRoute = "/docente"; // Volver al Dashboard
+  } else if (location.pathname.includes("/grupos")) {
+    currentMenu = GROUPS_MENU_TEACHER;
+    sidebarTitle = "Comunidades";
+    backRoute = "/docente";
+  }
+  // -----------------------------------
 
   return (
     <div className="flex min-h-screen w-full bg-neutral-50">
       {/* Sidebar Desktop */}
       <div className="hidden md:flex md:w-72 md:flex-col md:fixed md:inset-y-0 z-[80]">
-        {/* ✅ PASAMOS 'items' Y 'title' */}
         <Sidebar 
           className="bg-white border-r-neutral-200" 
-          items={TEACHER_MENU} 
-          title="Docente" 
+          items={currentMenu} 
+          title={sidebarTitle}
+          backRoute={backRoute} // Pasamos la ruta de retorno
         /> 
       </div>
 
@@ -38,15 +56,15 @@ export const TeacherLayout = ({ children }: Props) => {
                  </Button>
                </SheetTrigger>
                <SheetContent side="left" className="p-0 w-72">
-                 {/* ✅ PASAMOS 'items' Y 'title' TAMBIÉN AQUÍ */}
                  <Sidebar 
                    onClose={() => setIsSidebarOpen(false)} 
-                   items={TEACHER_MENU} 
-                   title="Docente" 
+                   items={currentMenu} 
+                   title={sidebarTitle}
+                   backRoute={backRoute}
                  />
                </SheetContent>
              </Sheet>
-             <div className="font-bold text-lg text-primary-contrast">Pulse Docente</div>
+             <div className="font-bold text-lg text-primary-contrast">Pulse {sidebarTitle}</div>
            </header>
         )}
 

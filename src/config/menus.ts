@@ -1,17 +1,49 @@
 import { 
-  BarChart3, FolderOpen, Users, Globe, Star, Search, BookOpen 
+  BarChart3, FolderOpen, Users, Globe, Star, 
+  LibraryBig, MessageSquare, ClipboardList 
 } from "lucide-react";
 import type { SidebarItem } from "../components/layout/Sidebar";
 
-export const TEACHER_MENU: SidebarItem[] = [
+// --- 1. MENÚS PRINCIPALES (DASHBOARD) ---
+
+export const TEACHER_MAIN_MENU: SidebarItem[] = [
   { label: "Dashboard", to: "/docente", icon: BarChart3 },
-  { label: "Mis Repositorios", to: "/docente/repositorios", icon: FolderOpen },
-  { label: "Mis Grupos", to: "/docente/grupos", icon: Users },
+  // Cambiamos el nombre como pediste, y apunta a la raiz del modulo
+  { label: "Biblioteca de Repositorios", to: "/docente/repositorios", icon: LibraryBig }, 
+  { label: "Comunidades", to: "/docente/grupos", icon: Users },
 ];
 
-export const STUDENT_MENU: SidebarItem[] = [
+export const STUDENT_MAIN_MENU: SidebarItem[] = [
   { label: "Explorar", to: "/estudiante/explorar", icon: Globe },
-  { label: "Mis Recursos", to: "/estudiante/biblioteca", icon: Star },
-  { label: "Recursos de Grupo", to: "/estudiante/grupos/recursos", icon: FolderOpen },
-  // { label: "Mis Comunidades", to: "/estudiante/grupos/mis-grupos", icon: Users },
+  { label: "Biblioteca de Repositorios", to: "/estudiante/repositorios", icon: LibraryBig },
+  { label: "Comunidades", to: "/estudiante/grupos", icon: Users },
+];
+
+// --- 2. SUB-MENÚS: REPOSITORIO (Contextual) ---
+
+export const REPO_MENU_TEACHER: SidebarItem[] = [
+  { label: "Repositorios", to: "/docente/repositorios/explorar", icon: Globe },
+  { label: "Mis Repositorios", to: "/docente/repositorios/mis-repos", icon: FolderOpen }, // Solo docente
+  { label: "Favoritos", to: "/docente/repositorios/favoritos", icon: Star },
+];
+
+export const REPO_MENU_STUDENT: SidebarItem[] = [
+  { label: "Repositorios (Públicos)", to: "/estudiante/repositorios/explorar", icon: Globe },
+  { label: "Favoritos", to: "/estudiante/biblioteca", icon: Star }, // Apunta a MyLibrary
+];
+
+// --- 3. SUB-MENÚS: GRUPOS (Contextual) ---
+
+export const GROUPS_MENU_TEACHER: SidebarItem[] = [
+  { label: "Mis Comunidades", to: "/docente/grupos/mis-grupos", icon: Users },
+  { label: "Explorar Comunidades", to: "/docente/grupos/explorar", icon: Globe },
+  { label: "Foros", to: "/docente/grupos/foros", icon: MessageSquare },
+  { label: "Mis Foros", to: "/estudiante/grupos/mis-foros", icon: ClipboardList },
+];
+
+export const GROUPS_MENU_STUDENT: SidebarItem[] = [
+  { label: "Mis Comunidades", to: "/estudiante/grupos/mis-grupos", icon: Users },
+  { label: "Explorar Comunidades", to: "/estudiante/grupos/explorar", icon: Globe },
+  { label: "Foros Públicos", to: "/estudiante/grupos/foros", icon: MessageSquare },
+  { label: "Mis Foros", to: "/estudiante/grupos/mis-foros", icon: ClipboardList },
 ];

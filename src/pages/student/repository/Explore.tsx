@@ -3,7 +3,7 @@ import { Input } from "../../../desingSystem/primitives";
 import { RepositoryList } from "../../../features/repository/components/RepositoryList";
 import { useRepository } from "../../../features/repository/hooks/useRepository"; // Reutilizamos hook
 // Usamos los mismos estilos del repositorio porque es la misma UI base
-import styles from "../../features/repository/components/repository.module.css"; 
+import styles from "../../../features/repository/components/repository.module.css"; 
 
 const StudentExplore = () => {
   const { repositories, isLoading } = useRepository();

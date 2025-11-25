@@ -9,7 +9,7 @@ import {
   Card, CardContent, CardHeader, CardTitle, CardDescription 
 } from "../../../desingSystem/primitives";
 import { useToast } from "../../../hooks/useToast";
-import styles from "../../features/repository/components/repository.module.css";
+import styles from "../../../features/repository/components/repository.module.css";
 
 const repoSchema = z.object({
   title: z.string().min(5, "El título debe ser descriptivo"),

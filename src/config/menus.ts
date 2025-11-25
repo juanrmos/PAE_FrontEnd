@@ -1,7 +1,7 @@
 import { 
   BarChart3, FolderOpen, Users, Globe, Star, Search, BookOpen 
 } from "lucide-react";
-import { SidebarItem } from "../components/layout/Sidebar";
+import type { SidebarItem } from "../components/layout/Sidebar";
 
 export const TEACHER_MENU: SidebarItem[] = [
   { label: "Dashboard", to: "/docente", icon: BarChart3 },

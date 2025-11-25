@@ -7,8 +7,8 @@ import { useNavigate } from "react-router-dom";
 import { 
   Button, Input, Form, FormControl, FormField, FormItem, FormLabel, FormMessage, Textarea, 
   Card, CardContent, CardHeader, CardTitle, CardDescription 
-} from "../../desingSystem/primitives";
-import { useToast } from "../../hooks/useToast";
+} from "../../../desingSystem/primitives";
+import { useToast } from "../../../hooks/useToast";
 import styles from "../../features/repository/components/repository.module.css";
 
 const repoSchema = z.object({

@@ -5,6 +5,8 @@ import { Sidebar } from "./Sidebar";
 import { Sheet, SheetContent, SheetTrigger } from "../../desingSystem/primitives";
 import { Button } from "../../desingSystem/primitives";
 import { useIsMobile } from "../../hooks/useMobile";
+// ✅ IMPORTAMOS EL MENÚ DE ESTUDIANTES
+import { STUDENT_MENU } from "../../config/menus"; 
 
 interface Props {
   children: React.ReactNode;
@@ -15,11 +17,15 @@ export const StudentLayout = ({ children }: Props) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
-    <div className="flex min-h-screen w-full bg-[#F8F9FA]"> {/* Fondo ligeramente distinto */}
-      
+    <div className="flex min-h-screen w-full bg-[#F8F9FA]">
       {/* Sidebar Desktop */}
       <div className="hidden md:flex md:w-72 md:flex-col md:fixed md:inset-y-0 z-[80]">
-        <Sidebar className="bg-white" />
+        {/* ✅ Corrección: props obligatorias */}
+        <Sidebar 
+          className="bg-white" 
+          items={STUDENT_MENU} 
+          title="Estudiante" 
+        />
       </div>
 
       <div className="flex flex-col flex-1 md:pl-72 transition-all duration-300">
@@ -32,7 +38,12 @@ export const StudentLayout = ({ children }: Props) => {
                  </Button>
                </SheetTrigger>
                <SheetContent side="left" className="p-0 w-72">
-                 <Sidebar onClose={() => setIsSidebarOpen(false)} />
+                 {/* ✅ Corrección: props obligatorias */}
+                 <Sidebar 
+                   onClose={() => setIsSidebarOpen(false)} 
+                   items={STUDENT_MENU} 
+                   title="Estudiante" 
+                 />
                </SheetContent>
              </Sheet>
              <div className="font-bold text-lg text-primary-contrast">Pulse</div>

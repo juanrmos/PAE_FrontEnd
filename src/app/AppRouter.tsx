@@ -6,68 +6,79 @@ import { TeacherLayout } from '../components/layout/TeacherLayout';
 import { StudentLayout } from '../components/layout/StudentLayout';
 import { ProtectedRoute } from '../components/layout/ProtectedRoute';
 
-// Pages (Auth & Public)
+// --- 1. PAGES: AUTH (Carpeta: pages/auth/) ---
 import Login from '../pages/auth/Login';
-import Register from '../pages/groups/student/Register';
-import NotFound from '../pages/NotFound';
+import Register from '../pages/auth/Register';
 
-// Pages (Docente) - ¡AHORA SÍ EXISTEN!
+// --- 2. PAGES: TEACHER (Carpeta: pages/teacher/) ---
 import TeacherDashboard from '../pages/teacher/Dashboard';
-import MyRepositories from '../pages/repository/MyRepositories';
-import ManageRepository from '../pages/repository/CreateRepository';
+import TeacherGroups from '../pages/teacher/Groups';
+// Subcarpeta: pages/teacher/repositories/
+import TeacherRepoList from '../pages/teacher/repositories/List';
+import TeacherRepoCreate from '../pages/teacher/repositories/Create';
 
-// Pages (Estudiante)
-import Popular from '../pages/repository/Popular';
+// --- 3. PAGES: STUDENT (Carpeta: pages/student/) ---
+// Subcarpeta: pages/student/repository/
+import StudentExplore from '../pages/student/repository/Explore';
+// Subcarpeta: pages/student/groups/
+import StudentGroupList from '../pages/student/groups/List';
+// Archivo directo en student/
+import StudentResources from '../pages/student/groups/Resources';
 
-// --- Wrappers de Layout (Solución al error de <Outlet>) ---
-// Esto asegura que el Outlet se pase correctamente como children
-const TeacherLayoutWrapper = () => (
-  <TeacherLayout>
-    <Outlet />
-  </TeacherLayout>
-);
+// --- 4. PAGES: PUBLIC/MISC (Raíz pages/) ---
+import NotFound from '../pages/NotFound';
+import Placeholder from '../pages/Placeholder'; // Para rutas sin archivo (ej. ForgotPassword)
 
-const StudentLayoutWrapper = () => (
-  <StudentLayout>
-    <Outlet />
-  </StudentLayout>
-);
+// Wrappers para Layouts
+const TeacherLayoutWrapper = () => <TeacherLayout><Outlet /></TeacherLayout>;
+const StudentLayoutWrapper = () => <StudentLayout><Outlet /></StudentLayout>;
 
 export const AppRouter = () => {
   return (
     <BrowserRouter>
       <Routes>
-        {/* 1. Rutas Públicas */}
+        {/* RUTAS PÚBLICAS */}
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        {/* Usamos Placeholder porque ForgotPassword no aparece en tu árbol actual */}
+        <Route path="/forgot-password" element={<Placeholder />} />
 
-        {/* 2. Rutas de Docente */}
+        {/* RUTAS DE DOCENTE */}
         <Route element={<ProtectedRoute allowedRoles={['docente']} />}>
-          {/* Usamos el Wrapper en lugar de escribir JSX anidado aquí */}
           <Route element={<TeacherLayoutWrapper />}>
             <Route path="/docente" element={<TeacherDashboard />} />
-            <Route path="/docente/repositorios" element={<MyRepositories />} />
-            <Route path="/docente/crear-repositorio" element={<ManageRepository />} />
-            {/* Redirección por defecto */}
+            <Route path="/docente/repositorios" element={<TeacherRepoList />} />
+            <Route path="/docente/crear-repositorio" element={<TeacherRepoCreate />} />
+            <Route path="/docente/grupos" element={<TeacherGroups />} />
             <Route path="/docente/*" element={<Navigate to="/docente" replace />} />
           </Route>
         </Route>
 
-        {/* 3. Rutas de Estudiante */}
+        {/* RUTAS DE ESTUDIANTE */}
         <Route element={<ProtectedRoute allowedRoles={['estudiante']} />}>
           <Route element={<StudentLayoutWrapper />}>
+            {/* Redirección inicial */}
             <Route path="/estudiante" element={<Navigate to="/estudiante/explorar" replace />} />
-            <Route path="/estudiante/explorar" element={<Popular />} />
-            {/* Redirección por defecto */}
+            
+            {/* Explorar (Repository) */}
+            <Route path="/estudiante/explorar" element={<StudentExplore />} />
+            
+            {/* Mis Comunidades */}
+            <Route path="/estudiante/grupos/mis-grupos" element={<StudentGroupList />} />
+            
+            {/* Recursos (Ubicado en pages/student/Resources.tsx) */}
+            {/* Lo mapeamos a la ruta de biblioteca o recursos de grupo según tu preferencia */}
+            <Route path="/estudiante/grupos/recursos" element={<StudentResources />} />
+            <Route path="/estudiante/biblioteca" element={<StudentResources />} />
+            
             <Route path="/estudiante/*" element={<Navigate to="/estudiante/explorar" replace />} />
           </Route>
         </Route>
 
-        {/* 4. Fallback Global */}
+        {/* 404 GLOBAL */}
         <Route path="*" element={<NotFound />} />
       </Routes>
       
-      {/* Notificaciones Globales */}
       <Toaster />
     </BrowserRouter>
   );

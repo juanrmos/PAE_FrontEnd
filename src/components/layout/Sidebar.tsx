@@ -1,7 +1,7 @@
 import { NavLink, Link } from "react-router-dom";
 import { cn } from "../../utils/cn";
 import { ScrollArea } from "../../desingSystem/primitives";
-import { LucideIcon } from "lucide-react"; // Importar tipo
+import { type LucideIcon } from "lucide-react"; // Importar tipo
 
 // Definimos la estructura de un ítem de menú
 export interface SidebarItem {

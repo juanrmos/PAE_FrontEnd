@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { Plus, FolderOpen } from "lucide-react";
-import { Button } from "../../desingSystem/primitives";
-import { RepositoryList } from "../../features/repository/components/RepositoryList";
-import { useMyRepositories } from "../../features/repository/hooks/useMyRepositories";
+import { Button } from "../../../desingSystem/primitives";
+import { RepositoryList } from "../../../features/repository/components/RepositoryList";
+import { useMyRepositories } from "../../../features/repository/hooks/useMyRepositories";
 
 const MyRepositories = () => {
   const { repos, isLoading } = useMyRepositories();

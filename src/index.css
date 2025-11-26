@@ -8,6 +8,9 @@
 /* 2. Definimos las Variables de Diseño (El "Alma" de Shadcn UI) */
 @layer base {
   :root {
+    --brand-action: 221 83% 53%; /* Azul principal */
+    --primary-contrast: 222 47% 11%; /* Texto oscuro */
+    --success-progress: 142 76% 36%; /* Verde éxito */
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 

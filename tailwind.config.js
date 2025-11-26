@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        // 1. Colores del Sistema (Mapeados a tus variables CSS de index.css)
+        // ... tus colores existentes ...
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -41,14 +41,12 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-
-        // 2. Tus Colores de Marca (PAE)
-        'brand-action': '#FF7A00',      // Naranja
-        'primary-contrast': '#1E3A8A',  // Azul Oscuro
+        'brand-action': '#FF7A00',
+        'primary-contrast': '#1E3A8A',
         'neutral-black': '#000000',
         'neutral-white': '#FFFFFF',
-        'success-progress': '#22C55E',  // Verde
-        'danger-progress': '#EF4444',   // Rojo
+        'success-progress': '#22C55E',
+        'danger-progress': '#EF4444',
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -57,5 +55,7 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require("tailwindcss-animate") // ← AGREGAR ESTO
+  ],
 }

@@ -1,3 +1,4 @@
+// src/features/groups/hooks/useTeacherGroups.ts
 import { useState, useEffect } from "react";
 import { getTeacherGroups, type Group } from "../services/groupsService";
 import { useToast } from "../../../hooks/useToast";
@@ -16,7 +17,7 @@ export const useTeacherGroups = () => {
       toast({ 
         variant: "destructive", 
         title: "Error", 
-        description: "No se pudieron cargar tus grupos." 
+        description: "No se pudieron cargar tus comunidades." 
       });
     } finally {
       setIsLoading(false);
@@ -28,10 +29,9 @@ export const useTeacherGroups = () => {
   }, []);
 
   const deleteGroup = (id: string) => {
-    // Simulación de eliminación optimista
     setGroups((prev) => prev.filter((g) => g.id !== id));
     toast({ title: "Grupo eliminado", description: "La comunidad ha sido cerrada." });
   };
 
-  return { groups, isLoading, deleteGroup };
+  return { groups, isLoading, deleteGroup, refresh: loadGroups };
 };

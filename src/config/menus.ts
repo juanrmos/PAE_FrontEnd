@@ -1,3 +1,4 @@
+// src/config/menus.ts
 import { 
   BarChart3, FolderOpen, Users, Globe, Star, 
   LibraryBig, MessageSquare, ClipboardList 
@@ -8,7 +9,6 @@ import type { SidebarItem } from "../components/layout/Sidebar";
 
 export const TEACHER_MAIN_MENU: SidebarItem[] = [
   { label: "Dashboard", to: "/docente", icon: BarChart3 },
-  // Cambiamos el nombre como pediste, y apunta a la raiz del modulo
   { label: "Biblioteca de Repositorios", to: "/docente/repositorios", icon: LibraryBig }, 
   { label: "Comunidades", to: "/docente/grupos", icon: Users },
 ];
@@ -23,13 +23,13 @@ export const STUDENT_MAIN_MENU: SidebarItem[] = [
 
 export const REPO_MENU_TEACHER: SidebarItem[] = [
   { label: "Repositorios", to: "/docente/repositorios/explorar", icon: Globe },
-  { label: "Mis Repositorios", to: "/docente/repositorios/mis-repos", icon: FolderOpen }, // Solo docente
+  { label: "Mis Repositorios", to: "/docente/repositorios/mis-repos", icon: FolderOpen },
   { label: "Favoritos", to: "/docente/repositorios/favoritos", icon: Star },
 ];
 
 export const REPO_MENU_STUDENT: SidebarItem[] = [
   { label: "Repositorios (Públicos)", to: "/estudiante/repositorios/explorar", icon: Globe },
-  { label: "Favoritos", to: "/estudiante/biblioteca", icon: Star }, // Apunta a MyLibrary
+  { label: "Favoritos", to: "/estudiante/biblioteca", icon: Star },
 ];
 
 // --- 3. SUB-MENÚS: GRUPOS (Contextual) ---
@@ -38,7 +38,7 @@ export const GROUPS_MENU_TEACHER: SidebarItem[] = [
   { label: "Mis Comunidades", to: "/docente/grupos/mis-grupos", icon: Users },
   { label: "Explorar Comunidades", to: "/docente/grupos/explorar", icon: Globe },
   { label: "Foros", to: "/docente/grupos/foros", icon: MessageSquare },
-  { label: "Mis Foros", to: "/estudiante/grupos/mis-foros", icon: ClipboardList },
+  { label: "Mis Foros", to: "/docente/grupos/mis-foros", icon: ClipboardList },
 ];
 
 export const GROUPS_MENU_STUDENT: SidebarItem[] = [

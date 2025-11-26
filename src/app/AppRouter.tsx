@@ -1,3 +1,4 @@
+// src/app/AppRouter.tsx
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { Toaster } from '../components/ui/Toaster';
 
@@ -12,19 +13,23 @@ import Register from '../pages/auth/Register';
 
 // --- 2. PAGES: TEACHER ---
 import TeacherDashboard from '../pages/teacher/Dashboard';
-import TeacherGroups from '../pages/teacher/Groups';
 
 // Sub-módulo: Repositorios (Docente)
-import TeacherRepoList from '../pages/teacher/repositories/List';     // Mis Repositorios
-import TeacherExplore from '../pages/teacher/repositories/Explore';   // Repositorios Públicos
-import TeacherFavorites from '../pages/teacher/repositories/Favorites'; // Favoritos Docente
-import TeacherRepoCreate from '../pages/teacher/repositories/Create'; // Crear Repositorio
+import TeacherRepoList from '../pages/teacher/repositories/List';
+import TeacherExplore from '../pages/teacher/repositories/Explore';
+import TeacherFavorites from '../pages/teacher/repositories/Favorites';
+import TeacherRepoCreate from '../pages/teacher/repositories/Create';
+
+// Sub-módulo: Grupos (Docente)
+import TeacherGroupsList from '../pages/teacher/groups/List';
+import TeacherGroupDetail from '../pages/teacher/groups/Detail';
 
 // --- 3. PAGES: STUDENT ---
 import StudentExplore from '../pages/student/repositories/Explore'; 
 import StudentFavorites from '../pages/student/repositories/Favorites'; 
 import StudentGroupList from '../pages/student/groups/List';
 import StudentGroupResources from '../pages/student/groups/Resources';
+import StudentGroupDetail from '../pages/student/groups/Detail';
 
 // --- 4. PAGES: PUBLIC/MISC ---
 import NotFound from '../pages/NotFound';
@@ -54,21 +59,16 @@ export const AppRouter = () => {
             <Route path="/docente" element={<TeacherDashboard />} />
             
             {/* Módulo Repositorios */}
-            {/* A. Explorar (Públicos) */}
             <Route path="/docente/repositorios" element={<Navigate to="/docente/repositorios/explorar" replace />} />
             <Route path="/docente/repositorios/explorar" element={<TeacherExplore />} />
-            
-            {/* B. Mis Repositorios */}
             <Route path="/docente/repositorios/mis-repos" element={<TeacherRepoList />} />
-            
-            {/* C. Favoritos */}
             <Route path="/docente/repositorios/favoritos" element={<TeacherFavorites />} />
-            
-            {/* D. Crear */}
             <Route path="/docente/crear-repositorio" element={<TeacherRepoCreate />} />
 
-            {/* Módulo Grupos */}
-            <Route path="/docente/grupos" element={<TeacherGroups />} />
+            {/* Módulo Grupos/Comunidades */}
+            <Route path="/docente/grupos" element={<Navigate to="/docente/grupos/mis-grupos" replace />} />
+            <Route path="/docente/grupos/mis-grupos" element={<TeacherGroupsList />} />
+            <Route path="/docente/grupos/:id" element={<TeacherGroupDetail />} />
             
             {/* Fallback Docente */}
             <Route path="/docente/*" element={<Navigate to="/docente" replace />} />
@@ -93,6 +93,8 @@ export const AppRouter = () => {
             {/* Módulo Grupos */}
             <Route path="/estudiante/grupos" element={<Navigate to="/estudiante/grupos/mis-grupos" replace />} />
             <Route path="/estudiante/grupos/mis-grupos" element={<StudentGroupList />} />
+            <Route path="/estudiante/grupos/:id" element={<StudentGroupResources />} />
+            <Route path="/estudiante/grupos/:id" element={<StudentGroupDetail />} />
             <Route path="/estudiante/grupos/recursos" element={<StudentGroupResources />} />
             
             {/* Fallback Estudiante */}

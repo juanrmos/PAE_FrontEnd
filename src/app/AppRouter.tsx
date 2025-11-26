@@ -24,7 +24,7 @@ import TeacherRepoCreate from '../pages/teacher/repositories/Create';
 import TeacherGroupsList from '../pages/teacher/groups/List';
 import TeacherGroupDetail from '../pages/teacher/groups/Detail';
 import TeacherGroupsExplore from '../pages/teacher/groups/Explore';
-import TeacherForums from "../pages/teacher/groups/Forums"; //!
+import TeacherForums from "../pages/teacher/groups/Forums";
 import TeacherMyForums from '../pages/teacher/groups/MyForums';
 
 // --- 3. PAGES: STUDENT ---
@@ -34,10 +34,17 @@ import StudentGroupList from '../pages/student/groups/List';
 import StudentGroupResources from '../pages/student/groups/Resources';
 import StudentGroupDetail from '../pages/student/groups/Detail';
 import StudentGroupsExplore from '../pages/student/groups/Explore';
-import StudentForums from '../pages/student/groups/Forums'; //!
+import StudentForums from '../pages/student/groups/Forums';
 import StudentMyForums from '../pages/student/groups/MyForums';
 
-// --- 4. PAGES: PUBLIC/MISC ---
+// --- 4. PAGES: LEARNING (COMPARTIDO) ---
+import Simulacros from '../pages/learning/Simulacros';
+import ExamView from '../pages/learning/ExamView';
+import ExamResults from '../pages/learning/ExamResults';
+import Desafios from '../pages/learning/Desafios';
+import Trivia from '../pages/learning/Trivia';
+
+// --- 5. PAGES: PUBLIC/MISC ---
 import NotFound from '../pages/NotFound';
 import Placeholder from '../pages/Placeholder';
 
@@ -79,6 +86,13 @@ export const AppRouter = () => {
             <Route path="/docente/grupos/foros" element={<TeacherForums />} />
             <Route path="/docente/grupos/mis-foros" element={<TeacherMyForums />} />
             
+            {/* Módulo Aprendizaje (Docente) */}
+            <Route path="/docente/aprendizaje/simulacros" element={<Simulacros />} />
+            <Route path="/docente/aprendizaje/simulacros/examen" element={<ExamView />} />
+            <Route path="/docente/aprendizaje/simulacros/resultados" element={<ExamResults />} />
+            <Route path="/docente/aprendizaje/desafios" element={<Desafios />} />
+            <Route path="/docente/aprendizaje/trivia" element={<Trivia />} />
+            
             {/* Fallback Docente */}
             <Route path="/docente/*" element={<Navigate to="/docente" replace />} />
           </Route>
@@ -107,6 +121,13 @@ export const AppRouter = () => {
             <Route path="/estudiante/grupos/explorar" element={<StudentGroupsExplore />} />
             <Route path="/estudiante/grupos/foros" element={<StudentForums />} />
             <Route path="/estudiante/grupos/mis-foros" element={<StudentMyForums />} />
+            
+            {/* Módulo Aprendizaje (Estudiante) */}
+            <Route path="/estudiante/aprendizaje/simulacros" element={<Simulacros />} />
+            <Route path="/estudiante/aprendizaje/simulacros/examen" element={<ExamView />} />
+            <Route path="/estudiante/aprendizaje/simulacros/resultados" element={<ExamResults />} />
+            <Route path="/estudiante/aprendizaje/desafios" element={<Desafios />} />
+            <Route path="/estudiante/aprendizaje/trivia" element={<Trivia />} />
             
             {/* Fallback Estudiante */}
             <Route path="/estudiante/*" element={<Navigate to="/estudiante/explorar" replace />} />

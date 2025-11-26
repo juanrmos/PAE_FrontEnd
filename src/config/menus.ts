@@ -56,9 +56,17 @@ export const GROUPS_MENU_STUDENT: SidebarItem[] = [
 ];
 
 // --- 4. SUB-MENÚ: ZONA DE APRENDIZAJE (Nuevo - Compartido) ---
+// Nota: Este menú no se usa actualmente porque cada item va directo en el menú principal
+// Pero lo dejamos por si en el futuro se quiere agrupar
 
-export const LEARNING_MENU: SidebarItem[] = [
-  { label: "Simulacros", to: "/aprendizaje/simulacros", icon: ClipboardList },
-  { label: "Desafíos", to: "/aprendizaje/desafios", icon: Gamepad2 },
-  { label: "Trivia Diaria", to: "/aprendizaje/trivia", icon: Zap },
+export const LEARNING_MENU_TEACHER: SidebarItem[] = [
+  { label: "Simulacros", to: "/docente/aprendizaje/simulacros", icon: ClipboardList },
+  { label: "Desafíos", to: "/docente/aprendizaje/desafios", icon: Gamepad2 },
+  { label: "Trivia Diaria", to: "/docente/aprendizaje/trivia", icon: Zap },
+];
+
+export const LEARNING_MENU_STUDENT: SidebarItem[] = [
+  { label: "Simulacros", to: "/estudiante/aprendizaje/simulacros", icon: ClipboardList },
+  { label: "Desafíos", to: "/estudiante/aprendizaje/desafios", icon: Gamepad2 },
+  { label: "Trivia Diaria", to: "/estudiante/aprendizaje/trivia", icon: Zap },
 ];

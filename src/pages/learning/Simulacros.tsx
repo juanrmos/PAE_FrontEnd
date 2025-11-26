@@ -1,5 +1,6 @@
 // src/pages/learning/Simulacros.tsx
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { ClipboardList, Clock, Zap, Target, AlertCircle } from "lucide-react";
 import {
   Card,
@@ -22,10 +23,15 @@ import styles from "../../features/learning/components/learning.module.css";
 type Difficulty = "facil" | "medio" | "dificil";
 
 const Simulacros = () => {
+  const navigate = useNavigate();
   const { universities, isLoading, startExam } = useSimulacros();
   const [selectedUniversity, setSelectedUniversity] = useState<string>("");
   const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty | "">("");
   const [isStarting, setIsStarting] = useState(false);
+
+  // Detectar si es docente o estudiante
+  const userRole = localStorage.getItem("role") as "docente" | "estudiante";
+  const basePath = userRole === "docente" ? "/docente" : "/estudiante";
 
   const difficulties = [
     {
@@ -74,9 +80,12 @@ const Simulacros = () => {
         difficulty: selectedDifficulty as Difficulty,
       };
       
-      await startExam(config);
-      // TODO: Navegar a la vista del examen
-      alert("Simulacro iniciado (Vista de examen próximamente)");
+      const simulacro = await startExam(config);
+      
+      // Navegar a la vista del examen con el simulacro
+      navigate(`${basePath}/aprendizaje/simulacros/examen`, {
+        state: { simulacro },
+      });
     } catch (error) {
       console.error("Error al iniciar simulacro:", error);
     } finally {

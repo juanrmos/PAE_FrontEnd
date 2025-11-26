@@ -23,6 +23,9 @@ import TeacherRepoCreate from '../pages/teacher/repositories/Create';
 // Sub-módulo: Grupos (Docente)
 import TeacherGroupsList from '../pages/teacher/groups/List';
 import TeacherGroupDetail from '../pages/teacher/groups/Detail';
+import TeacherGroupsExplore from '../pages/teacher/groups/Explore';
+import TeacherForums from "../pages/teacher/groups/MyForums"; //!
+import TeacherMyForums from '../pages/teacher/groups/MyForums';
 
 // --- 3. PAGES: STUDENT ---
 import StudentExplore from '../pages/student/repositories/Explore'; 
@@ -30,6 +33,9 @@ import StudentFavorites from '../pages/student/repositories/Favorites';
 import StudentGroupList from '../pages/student/groups/List';
 import StudentGroupResources from '../pages/student/groups/Resources';
 import StudentGroupDetail from '../pages/student/groups/Detail';
+import StudentGroupsExplore from '../pages/student/groups/Explore';
+import StudentForums from '../pages/student/groups/MyForums'; //!
+import StudentMyForums from '../pages/student/groups/MyForums';
 
 // --- 4. PAGES: PUBLIC/MISC ---
 import NotFound from '../pages/NotFound';
@@ -69,6 +75,9 @@ export const AppRouter = () => {
             <Route path="/docente/grupos" element={<Navigate to="/docente/grupos/mis-grupos" replace />} />
             <Route path="/docente/grupos/mis-grupos" element={<TeacherGroupsList />} />
             <Route path="/docente/grupos/:id" element={<TeacherGroupDetail />} />
+            <Route path="/docente/grupos/explorar" element={<TeacherGroupsExplore />} />
+            <Route path="/docente/grupos/foros" element={<TeacherForums />} />
+            <Route path="/docente/grupos/mis-foros" element={<TeacherMyForums />} />
             
             {/* Fallback Docente */}
             <Route path="/docente/*" element={<Navigate to="/docente" replace />} />
@@ -93,9 +102,11 @@ export const AppRouter = () => {
             {/* Módulo Grupos */}
             <Route path="/estudiante/grupos" element={<Navigate to="/estudiante/grupos/mis-grupos" replace />} />
             <Route path="/estudiante/grupos/mis-grupos" element={<StudentGroupList />} />
-            <Route path="/estudiante/grupos/:id" element={<StudentGroupResources />} />
             <Route path="/estudiante/grupos/:id" element={<StudentGroupDetail />} />
             <Route path="/estudiante/grupos/recursos" element={<StudentGroupResources />} />
+            <Route path="/estudiante/grupos/explorar" element={<StudentGroupsExplore />} />
+            <Route path="/estudiante/grupos/foros" element={<StudentForums />} />
+            <Route path="/estudiante/grupos/mis-foros" element={<StudentMyForums />} />
             
             {/* Fallback Estudiante */}
             <Route path="/estudiante/*" element={<Navigate to="/estudiante/explorar" replace />} />

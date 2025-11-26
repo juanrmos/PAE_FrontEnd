@@ -24,7 +24,7 @@ import TeacherRepoCreate from '../pages/teacher/repositories/Create';
 import TeacherGroupsList from '../pages/teacher/groups/List';
 import TeacherGroupDetail from '../pages/teacher/groups/Detail';
 import TeacherGroupsExplore from '../pages/teacher/groups/Explore';
-import TeacherForums from "../pages/teacher/groups/MyForums"; //!
+import TeacherForums from "../pages/teacher/groups/Forums"; //!
 import TeacherMyForums from '../pages/teacher/groups/MyForums';
 
 // --- 3. PAGES: STUDENT ---
@@ -34,7 +34,7 @@ import StudentGroupList from '../pages/student/groups/List';
 import StudentGroupResources from '../pages/student/groups/Resources';
 import StudentGroupDetail from '../pages/student/groups/Detail';
 import StudentGroupsExplore from '../pages/student/groups/Explore';
-import StudentForums from '../pages/student/groups/MyForums'; //!
+import StudentForums from '../pages/student/groups/Forums'; //!
 import StudentMyForums from '../pages/student/groups/MyForums';
 
 // --- 4. PAGES: PUBLIC/MISC ---

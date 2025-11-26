@@ -1,7 +1,8 @@
 // src/config/menus.ts
 import { 
   BarChart3, FolderOpen, Users, Globe, Star, 
-  LibraryBig, MessageSquare, ClipboardList 
+  LibraryBig, MessageSquare, ClipboardList, 
+  Gamepad2, Zap
 } from "lucide-react";
 import type { SidebarItem } from "../components/layout/Sidebar";
 
@@ -11,12 +12,18 @@ export const TEACHER_MAIN_MENU: SidebarItem[] = [
   { label: "Dashboard", to: "/docente", icon: BarChart3 },
   { label: "Biblioteca de Repositorios", to: "/docente/repositorios", icon: LibraryBig }, 
   { label: "Comunidades", to: "/docente/grupos", icon: Users },
+  { label: "Simulacros", to: "/docente/aprendizaje/simulacros", icon: ClipboardList },
+  { label: "Desafíos", to: "/docente/aprendizaje/desafios", icon: Gamepad2 },
+  { label: "Trivia Diaria", to: "/docente/aprendizaje/trivia", icon: Zap },
 ];
 
 export const STUDENT_MAIN_MENU: SidebarItem[] = [
   { label: "Explorar", to: "/estudiante/explorar", icon: Globe },
   { label: "Biblioteca de Repositorios", to: "/estudiante/repositorios", icon: LibraryBig },
   { label: "Comunidades", to: "/estudiante/grupos", icon: Users },
+  { label: "Simulacros", to: "/estudiante/aprendizaje/simulacros", icon: ClipboardList },
+  { label: "Desafíos", to: "/estudiante/aprendizaje/desafios", icon: Gamepad2 },
+  { label: "Trivia Diaria", to: "/estudiante/aprendizaje/trivia", icon: Zap },
 ];
 
 // --- 2. SUB-MENÚS: REPOSITORIO (Contextual) ---
@@ -46,4 +53,12 @@ export const GROUPS_MENU_STUDENT: SidebarItem[] = [
   { label: "Explorar Comunidades", to: "/estudiante/grupos/explorar", icon: Globe },
   { label: "Foros Públicos", to: "/estudiante/grupos/foros", icon: MessageSquare },
   { label: "Mis Foros", to: "/estudiante/grupos/mis-foros", icon: ClipboardList },
+];
+
+// --- 4. SUB-MENÚ: ZONA DE APRENDIZAJE (Nuevo - Compartido) ---
+
+export const LEARNING_MENU: SidebarItem[] = [
+  { label: "Simulacros", to: "/aprendizaje/simulacros", icon: ClipboardList },
+  { label: "Desafíos", to: "/aprendizaje/desafios", icon: Gamepad2 },
+  { label: "Trivia Diaria", to: "/aprendizaje/trivia", icon: Zap },
 ];

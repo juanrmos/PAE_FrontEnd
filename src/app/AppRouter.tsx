@@ -44,7 +44,10 @@ import ExamResults from '../pages/learning/ExamResults';
 import Desafios from '../pages/learning/Desafios';
 import Trivia from '../pages/learning/Trivia';
 
-// --- 5. PAGES: PUBLIC/MISC ---
+// --- 5. PAGES: PROFILE (COMPARTIDO) ---
+import Profile from '../pages/Profile';
+
+// --- 6. PAGES: PUBLIC/MISC ---
 import NotFound from '../pages/NotFound';
 import Placeholder from '../pages/Placeholder';
 import Landing from '../pages/Landing';
@@ -64,10 +67,6 @@ export const AppRouter = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<Placeholder />} />
-
-        <Route path="/register" element={<Register />} />
-        <Route path="/forgot-password" element={<Placeholder />} />
-
 
         {/* ------------------------------- */}
         {/* 2. ZONA DOCENTE (TeacherLayout) */}
@@ -98,6 +97,9 @@ export const AppRouter = () => {
             <Route path="/docente/aprendizaje/simulacros/resultados" element={<ExamResults />} />
             <Route path="/docente/aprendizaje/desafios" element={<Desafios />} />
             <Route path="/docente/aprendizaje/trivia" element={<Trivia />} />
+            
+            {/* Perfil (Docente) */}
+            <Route path="/docente/perfil" element={<Profile />} />
             
             {/* Fallback Docente */}
             <Route path="/docente/*" element={<Navigate to="/docente" replace />} />
@@ -134,6 +136,9 @@ export const AppRouter = () => {
             <Route path="/estudiante/aprendizaje/simulacros/resultados" element={<ExamResults />} />
             <Route path="/estudiante/aprendizaje/desafios" element={<Desafios />} />
             <Route path="/estudiante/aprendizaje/trivia" element={<Trivia />} />
+            
+            {/* Perfil (Estudiante) */}
+            <Route path="/estudiante/perfil" element={<Profile />} />
             
             {/* Fallback Estudiante */}
             <Route path="/estudiante/*" element={<Navigate to="/estudiante/explorar" replace />} />

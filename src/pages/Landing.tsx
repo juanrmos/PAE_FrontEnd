@@ -90,11 +90,12 @@ const Landing = () => {
 
       {/* ========== HERO SECTION ========== */}
       <section className="relative h-[500px] md:h-[600px] w-full overflow-hidden">
-        {/* Background Image */}
+        {/* Background Image - Corregido */}
         <img
-          src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1920&h=1080&fit=crop"
+          src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1920&auto=format&fit=crop"
           alt="Estudiantes estudiando juntos"
           className="absolute inset-0 w-full h-full object-cover"
+          loading="eager"
         />
 
         {/* Dark Overlay */}
@@ -167,9 +168,10 @@ const Landing = () => {
       {/* ========== MOTIVATIONAL BANNER ========== */}
       <section className="relative h-[400px] md:h-[500px] w-full overflow-hidden">
         <img
-          src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1920&h=1080&fit=crop"
+          src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1920&auto=format&fit=crop"
           alt="Estudiante exitoso frente a universidad"
           className="absolute inset-0 w-full h-full object-cover"
+          loading="lazy"
         />
 
         {/* Gradient Overlay */}

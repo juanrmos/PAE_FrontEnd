@@ -33,9 +33,9 @@ import {
   FormMessage,
   Skeleton,
   Checkbox,
-} from "../../desingSystem/primitives";
-import { useProfile } from "../../features/profile/hooks/useProfile";
-import { profileSchema, passwordSchema, type ProfileFormData, type PasswordFormData } from "../../features/profile/schemas";
+} from "../desingSystem/primitives";
+import { useProfile } from "../features/profile/hooks/useProfile";
+import { profileSchema, passwordSchema, type ProfileFormData, type PasswordFormData } from "../features/profile/schemas";
 
 const Profile = () => {
   const { user, stats, sessions, isLoading, isUpdating, updateProfile, updatePassword, logoutAllSessions } = useProfile();

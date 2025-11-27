@@ -60,10 +60,14 @@ export const AppRouter = () => {
         {/* ------------------------------- */}
         {/* 1. RUTAS PÚBLICAS               */}
         {/* ------------------------------- */}
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<Landing />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<Placeholder />} />
-        <Route path="/landing" element={<Landing />} />
+
+        <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<Placeholder />} />
+
 
         {/* ------------------------------- */}
         {/* 2. ZONA DOCENTE (TeacherLayout) */}

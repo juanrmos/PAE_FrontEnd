@@ -64,21 +64,23 @@ const Landing = () => {
               </div>
               <span className="text-xl font-bold hidden sm:block">PAE</span>
             </Link>
-
             {/* Navigation Links */}
             <div className="flex items-center gap-4">
-              <Link
-                to="/register"
-                className="text-sm font-medium hover:text-brand-action transition-colors"
-              >
-                Registrarse
+              <Link to="/login">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-white hover:text-brand-action hover:bg-white/10"
+                >
+                  Iniciar Sesión
+                </Button>
               </Link>
-              <Link to="/">
+              <Link to="/register">
                 <Button
                   size="sm"
                   className="bg-brand-action hover:bg-brand-action/90"
                 >
-                  Login
+                  Crear Cuenta
                 </Button>
               </Link>
             </div>

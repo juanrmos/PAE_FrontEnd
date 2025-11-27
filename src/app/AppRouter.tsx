@@ -47,6 +47,7 @@ import Trivia from '../pages/learning/Trivia';
 // --- 5. PAGES: PUBLIC/MISC ---
 import NotFound from '../pages/NotFound';
 import Placeholder from '../pages/Placeholder';
+import Landing from '../pages/Landing';
 
 // Wrappers para Layouts
 const TeacherLayoutWrapper = () => <TeacherLayout><Outlet /></TeacherLayout>;
@@ -62,6 +63,7 @@ export const AppRouter = () => {
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<Placeholder />} />
+        <Route path="/landing" element={<Landing />} />
 
         {/* ------------------------------- */}
         {/* 2. ZONA DOCENTE (TeacherLayout) */}

@@ -1,4 +1,6 @@
 // src/config/menus.ts
+
+//!Arreglar la redireccion de estudiantes a la biblioteca de repositorios. Actualmente solo lo redirigue a explorar
 import { 
   BarChart3, FolderOpen, Users, Globe, Star, 
   LibraryBig, MessageSquare, ClipboardList, 
@@ -20,7 +22,7 @@ export const TEACHER_MAIN_MENU: SidebarItem[] = [
 
 export const STUDENT_MAIN_MENU: SidebarItem[] = [
   { label: "Explorar", to: "/estudiante/explorar", icon: Globe },
-  { label: "Biblioteca de Repositorios", to: "/estudiante/repositorios", icon: LibraryBig },
+  { label: "Mi Biblioteca", to: "/estudiante/biblioteca", icon: LibraryBig },
   { label: "Comunidades", to: "/estudiante/grupos", icon: Users },
   { label: "Simulacros", to: "/estudiante/aprendizaje/simulacros", icon: ClipboardList },
   { label: "Desafíos", to: "/estudiante/aprendizaje/desafios", icon: Gamepad2 },

@@ -11,15 +11,14 @@ import {
 import { useAuth } from "../hooks/useAuth";
 import styles from "./auth.module.css";
 
-// ✅ CORRECCIÓN 1: Esquema Zod estricto
+// Refactorizar.
 const registerSchema = z.object({
   name: z.string().min(2, { message: "El nombre debe tener al menos 2 caracteres" }),
   email: z.string().email({ message: "Correo inválido" }),
   password: z.string().min(6, { message: "Mínimo 6 caracteres" }),
   confirmPassword: z.string(),
-  // Eliminamos .default() aquí para que TS no lo marque como opcional en la inferencia inicial,
-  // o lo manejamos explícitamente. La mejor forma es z.boolean().
-  isTeacher: z.boolean(), 
+
+  isTeacher: z.boolean(),  // ❌ Inferido como boolean, pero form puede tener undefined
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Las contraseñas no coinciden",
   path: ["confirmPassword"],

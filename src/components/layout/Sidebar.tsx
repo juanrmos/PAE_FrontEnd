@@ -1,7 +1,7 @@
 import { NavLink, Link } from "react-router-dom";
 import { cn } from "../../utils/cn";
 import { ScrollArea } from "../../desingSystem/primitives";
-import { type LucideIcon, ArrowLeft, Home } from "lucide-react"; // Importamos Home y ArrowLeft
+import { type LucideIcon, ArrowLeft, Home } from "lucide-react"; // Importamos Home y ArrowLefta
 
 export interface SidebarItem {
   label: string;

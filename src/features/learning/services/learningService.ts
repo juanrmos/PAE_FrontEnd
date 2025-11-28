@@ -252,7 +252,7 @@ const getUniversitiesMock = async (): Promise<University[]> => {
 };
 
 const startSimulacroMock = async (config: SimulacroConfig): Promise<SimulacroResult> => {
-  const timeLimit = config.difficulty === "facil" ? 7200 : config.difficulty === "medio" ? 7200 : 5760;
+  const timeLimit = config.difficulty === "facil" ? 9000 : config.difficulty === "medio" ? 7200 : 5760;
   
   // Generar más preguntas para el simulacro (20 total)
   const extendedQuestions = [

@@ -33,10 +33,12 @@ export const useAuth = () => {
       if (response.user.role === "docente") {
         navigate("/docente");
       } else {
-        navigate("/estudiante"); 
+        navigate("/estudiante/explorar"); 
       }
       
-      window.dispatchEvent(new Event("storage")); //corregir
+      window.dispatchEvent(new CustomEvent("auth-change", { 
+        detail: { user: response.user } 
+      }));
 
     } catch (error) {
       toast({

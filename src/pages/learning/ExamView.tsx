@@ -1,4 +1,8 @@
 // src/pages/learning/ExamView.tsx
+//!Timer no se limpia si el componente se desmonta
+//!Problema Oculto: handleAutoSubmit cambia en cada render, recreando el timer.
+//!Solución: Usar useCallback con deps correctas.
+//!Mejorar la logica del guardado de las respuestas. Talvez agregar si cambia de pestaña, que pierda todo y envie sus resultados automaticamente sin importar si resolvio todo. 
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Clock, AlertCircle, ChevronLeft, ChevronRight, Flag, CheckCircle } from "lucide-react";
@@ -65,7 +69,7 @@ const ExamView = () => {
     }
   }, [answers, simulacro, timeRemaining, navigate, toast, basePath]);
 
-  // Timer
+  // Restructurar la logica, depende mucho de useeffect. 
   useEffect(() => {
     if (!simulacro || timeRemaining <= 0) return;
 

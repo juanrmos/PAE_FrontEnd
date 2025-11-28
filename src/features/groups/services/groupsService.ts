@@ -278,7 +278,7 @@ export const getGroupDetail = async (id: string): Promise<GroupDetail> => {
   }
 };
 
-// ========== FUNCIÓN PARA ESTUDIANTES (FALTABA) ==========
+// ========== FUNCIÓN PARA ESTUDIANTES (FALTABA) ==========a
 export const getStudentGroups = async (): Promise<Group[]> => {
   if (import.meta.env.VITE_USE_MOCKS === "true") {
     console.log("🔶 Modo Mock: Student Groups");

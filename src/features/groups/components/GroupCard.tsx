@@ -5,6 +5,8 @@ import { Badge, Button, Avatar, AvatarImage, AvatarFallback } from "../../../des
 import type { Group } from "../services/groupsService";
 import styles from "./groups.module.css";
 
+//Agregar prop ondelate a la interfaz
+
 interface GroupCardProps {
   group: Group;
   role?: "docente" | "estudiante";

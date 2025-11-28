@@ -5,7 +5,7 @@ export interface Repository {
   id: string;
   title: string;
   author: string;
-  role: string;
+  role: "docente" | "estudiante";
   views: number;
   downloads: number;
   tags: string[];
@@ -25,7 +25,7 @@ const MOCK_REPOS: Repository[] = [
     id: "1",
     title: "Matemáticas I: Álgebra Lineal",
     author: "Prof. Carlos",
-    role: "Docente",
+    role: "docente",
     views: 1205,
     downloads: 340,
     tags: ["Matemáticas"],
@@ -36,7 +36,7 @@ const MOCK_REPOS: Repository[] = [
     id: "2",
     title: "Historia Universal: Siglo XX",
     author: "Dra. Ana María",
-    role: "Docente",
+    role: "docente",
     views: 890,
     downloads: 120,
     tags: ["Historia"],
@@ -50,7 +50,7 @@ const MY_MOCK_REPOS: Repository[] = [
     id: "101",
     title: "Física II: Dinámica Avanzada",
     author: "Tú",
-    role: "Docente",
+    role: "docente",
     views: 12,
     downloads: 0,
     tags: ["Física"],

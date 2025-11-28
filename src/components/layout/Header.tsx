@@ -4,6 +4,10 @@ import { Button } from "../../desingSystem/primitives/Button";
 import { Sheet, SheetContent, SheetTrigger } from "../../desingSystem/primitives/Sheet";
 import { Sidebar } from "./Sidebar";
 
+
+
+//!Inconsistencia en nombre de marca (Landing usa "PAE", Header usa "Pulse"). MANTENER PAE
+
 export function Header() {
   const [open, setOpen] = useState(false);
 

@@ -119,7 +119,7 @@ export const AppRouter = () => {
             <Route path="/estudiante/repositorios" element={<Navigate to="/estudiante/explorar" replace />} />
 
             {/* Biblioteca / Favoritos */}
-            <Route path="/estudiante/biblioteca" element={<StudentFavorites />} />
+            <Route path="/estudiante/repositorios" element={<Navigate to="/estudiante/biblioteca" replace />} />
             
             {/* Módulo Grupos */}
             <Route path="/estudiante/grupos" element={<Navigate to="/estudiante/grupos/mis-grupos" replace />} />
@@ -145,7 +145,7 @@ export const AppRouter = () => {
           </Route>
         </Route>
 
-        {/* ------------------------------- */}
+        {/* --------------------a---------- */}
         {/* 4. FALLBACK GLOBAL (404)        */}
         {/* ------------------------------- */}
         <Route path="*" element={<NotFound />} />

@@ -1,26 +1,42 @@
-// src/features/groups/components/GroupCard.tsx
-import { Users, Clock } from "lucide-react";
+import { Users, Clock, Trash2, MoreVertical } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { Badge, Button, Avatar, AvatarImage, AvatarFallback } from "../../../desingSystem/primitives";
+import { 
+  Badge, 
+  Button, 
+  Avatar, 
+  AvatarImage, 
+  AvatarFallback,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../../../desingSystem/primitives";
 import type { Group } from "../services/groupsService";
 import styles from "./groups.module.css";
-
-//Agregar prop ondelate a la interfaz
 
 interface GroupCardProps {
   group: Group;
   role?: "docente" | "estudiante";
+  onDelete?: (id: string) => void; // Prop opcional para eliminar
 }
 
-export function GroupCard({ group, role }: GroupCardProps) {
+export function GroupCard({ group, role, onDelete }: GroupCardProps) {
   const navigate = useNavigate();
   
-  // Determinar el rol automáticamente desde localStorage si no se proporciona
+  // Determinar el rol desde localStorage si no se proporciona
   const userRole = role || (localStorage.getItem("role") as "docente" | "estudiante");
 
   const handleEnter = () => {
     const basePath = userRole === "docente" ? "/docente" : "/estudiante";
     navigate(`${basePath}/grupos/${group.id}`);
+  };
+
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    
+    if (window.confirm(`¿Estás seguro de eliminar "${group.name}"?`)) {
+      onDelete?.(group.id);
+    }
   };
 
   return (
@@ -34,6 +50,31 @@ export function GroupCard({ group, role }: GroupCardProps) {
             </AvatarFallback>
           </Avatar>
         </div>
+
+        {/* Menú de opciones solo para docentes */}
+        {userRole === "docente" && onDelete && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="absolute top-4 right-4"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <MoreVertical className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem 
+                className="text-red-600 focus:text-red-600 focus:bg-red-50"
+                onClick={handleDelete}
+              >
+                <Trash2 className="h-4 w-4 mr-2" />
+                Eliminar Grupo
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </div>
 
       <div>

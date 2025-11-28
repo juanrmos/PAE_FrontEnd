@@ -1,24 +1,18 @@
-// src/pages/learning/ExamView.tsx
-//!Timer no se limpia si el componente se desmonta
-//!Problema Oculto: handleAutoSubmit cambia en cada render, recreando el timer.
-//!Solución: Usar useCallback con deps correctas.
-//!Mejorar la logica del guardado de las respuestas. Talvez agregar si cambia de pestaña, que pierda todo y envie sus resultados automaticamente sin importar si resolvio todo. 
-import { useState, useEffect, useCallback } from "react";
+// src/pages/learning/ExamView.tsx - VERSIÓN CORREGIDA
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Clock, AlertCircle, ChevronLeft, ChevronRight, Flag, CheckCircle } from "lucide-react";
-import {
-  Card,
-  Button,
-  Badge,
-} from "../../desingSystem/primitives";
+import { Card, Button, Badge } from "../../desingSystem/primitives";
 import { submitSimulacro, type SimulacroResult, type SimulacroSubmission } from "../../features/learning/services/learningService";
 import { useToast } from "../../hooks/useToast";
+import { useAuth } from "../../context/AuthContext";
 import styles from "../../features/learning/components/learning.module.css";
 
 const ExamView = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
+  const { user } = useAuth();
   
   const simulacro = location.state?.simulacro as SimulacroResult | undefined;
 
@@ -31,13 +25,25 @@ const ExamView = () => {
   const [markedForReview, setMarkedForReview] = useState<Set<number>>(new Set());
   const [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
 
-  // Detectar rol del usuario para navegación
-  const userRole = localStorage.getItem("role") as "docente" | "estudiante";
-  const basePath = userRole === "docente" ? "/docente" : "/estudiante";
+  // Usar useRef para almacenar valores actuales sin causar re-renders
+  const answersRef = useRef(answers);
+  const simulacroRef = useRef(simulacro);
+  const timeRemainingRef = useRef(timeRemaining);
 
-  // 1. Mover aquí la definición completa de handleAutoSubmit (antes del useEffect)
+  // Actualizar refs cuando cambien los valores
+  useEffect(() => {
+    answersRef.current = answers;
+  }, [answers]);
+
+  useEffect(() => {
+    timeRemainingRef.current = timeRemaining;
+  }, [timeRemaining]);
+
+  const basePath = user?.role === 'docente' ? '/docente' : '/estudiante';
+
+  // Función de auto-submit estable con useCallback
   const handleAutoSubmit = useCallback(async () => {
-    if (!simulacro) return; // Guard clause por seguridad
+    if (!simulacroRef.current) return;
 
     toast({
       variant: "destructive",
@@ -48,9 +54,9 @@ const ExamView = () => {
     setIsSubmitting(true);
     try {
       const submission: SimulacroSubmission = {
-        simulacroId: simulacro.id,
-        answers: answers.map((a) => a ?? -1),
-        timeSpent: simulacro.timeLimit - timeRemaining, // Usar timeRemaining actual
+        simulacroId: simulacroRef.current.id,
+        answers: answersRef.current.map((a) => a ?? -1),
+        timeSpent: simulacroRef.current.timeLimit - timeRemainingRef.current,
       };
 
       const result = await submitSimulacro(submission);
@@ -67,36 +73,44 @@ const ExamView = () => {
       });
       setIsSubmitting(false);
     }
-  }, [answers, simulacro, timeRemaining, navigate, toast, basePath]);
+  }, [navigate, toast, basePath]);
 
-  // Restructurar la logica, depende mucho de useeffect. 
+  // Timer con cleanup apropiado
   useEffect(() => {
     if (!simulacro || timeRemaining <= 0) return;
 
     const timer = setInterval(() => {
       setTimeRemaining((prev) => {
-        if (prev <= 1) {
+        const newTime = prev - 1;
+        
+        // Auto-submit cuando llegue a 0
+        if (newTime <= 0) {
           clearInterval(timer);
           handleAutoSubmit();
           return 0;
         }
-        return prev - 1;
+        
+        return newTime;
       });
     }, 1000);
 
-    return () => clearInterval(timer);
-  }, [simulacro, handleAutoSubmit]); // timeRemaining removido de deps para evitar loops, handleAutoSubmit es estable si sus deps lo son
+    return () => {
+      clearInterval(timer);
+    };
+  }, [simulacro, handleAutoSubmit]);
 
   // Advertencia al salir
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      e.preventDefault();
-      e.returnValue = "";
+      if (!isSubmitting && timeRemaining > 0) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
     };
 
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
-  }, []);
+  }, [isSubmitting, timeRemaining]);
 
   if (!simulacro) {
     return (
@@ -107,7 +121,7 @@ const ExamView = () => {
           <p className="text-muted-foreground mb-4">
             No hay un examen activo. Por favor inicia uno nuevo.
           </p>
-          <Button onClick={() => navigate("/docente/aprendizaje/simulacros")}>
+          <Button onClick={() => navigate(`${basePath}/aprendizaje/simulacros`)}>
             Volver a Simulacros
           </Button>
         </Card>
@@ -116,6 +130,7 @@ const ExamView = () => {
   }
 
   const currentQuestion = simulacro.questions[currentQuestionIndex];
+  
   const formatTime = (seconds: number) => {
     const hrs = Math.floor(seconds / 3600);
     const mins = Math.floor((seconds % 3600) / 60);
@@ -150,8 +165,6 @@ const ExamView = () => {
       setCurrentQuestionIndex(currentQuestionIndex - 1);
     }
   };
-
-  // 2. Aquí estaba la segunda declaración duplicada de handleAutoSubmit, se ha eliminado.
 
   const handleSubmit = async () => {
     const unanswered = answers.filter((a) => a === null).length;
@@ -189,7 +202,7 @@ const ExamView = () => {
   };
 
   const answeredCount = answers.filter((a) => a !== null).length;
-  const isTimeWarning = timeRemaining < 300; // Últimos 5 minutos
+  const isTimeWarning = timeRemaining < 300;
   const unansweredCount = answers.filter((a) => a === null).length;
 
   return (

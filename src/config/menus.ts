@@ -59,9 +59,6 @@ export const GROUPS_MENU_STUDENT: SidebarItem[] = [
   { label: "Mis Foros", to: "/estudiante/grupos/mis-foros", icon: ClipboardList },
 ];
 
-// --- 4. SUB-MENÚ: ZONA DE APRENDIZAJE (Nuevo - Compartido) ---
-// Nota: Este menú no se usa actualmente porque cada item va directo en el menú principal
-// Pero lo dejamos por si en el futuro se quiere agrupar
 
 export const LEARNING_MENU_TEACHER: SidebarItem[] = [
   { label: "Simulacros", to: "/docente/aprendizaje/simulacros", icon: ClipboardList },

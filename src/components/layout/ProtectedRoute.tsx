@@ -1,26 +1,43 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+import { Skeleton } from '../../desingSystem/primitives';
 
-interface Props {
-  allowedRoles: string[];
+interface ProtectedRouteProps {
+  allowedRoles: Array<'docente' | 'estudiante' | 'admin'>;
 }
 
-export const ProtectedRoute = ({ allowedRoles }: Props) => {
-  const token = localStorage.getItem("token");
-  const userRole = localStorage.getItem("role") || "";
+export const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
+  const { user, isAuthenticated, isLoading } = useAuth();
 
-  
-  if (!token) {
-    return <Navigate to="/" replace />;
+  // Mostrar loading mientras se verifica autenticación
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-neutral-50">
+        <div className="space-y-4 w-full max-w-md p-8">
+          <Skeleton className="h-12 w-full rounded-xl" />
+          <Skeleton className="h-64 w-full rounded-xl" />
+          <Skeleton className="h-12 w-full rounded-xl" />
+        </div>
+      </div>
+    );
   }
 
-  if (!allowedRoles.includes(userRole)) {
-    
-    if (userRole === "estudiante") return <Navigate to="/estudiante" replace />;
-    if (userRole === "docente") return <Navigate to="/docente" replace />;
-    
-    return <Navigate to="/" replace />;
+  // Si no está autenticado, redirigir al login
+  if (!isAuthenticated || !user) {
+    return <Navigate to="/login" replace />;
   }
 
-  // 3. Si todo bien, renderiza el contenido (Outlet)
+  // Si el rol no está permitido, redirigir al dashboard correspondiente
+  if (!allowedRoles.includes(user.role)) {
+    const redirectPath = user.role === 'docente' 
+      ? '/docente' 
+      : user.role === 'estudiante'
+      ? '/estudiante/explorar'
+      : '/';
+    
+    return <Navigate to={redirectPath} replace />;
+  }
+
+  // Usuario autenticado y autorizado
   return <Outlet />;
 };

@@ -1,4 +1,6 @@
 // src/services/api.ts
+
+//!Agregar validación JWT y refresh token.
 import axios from "axios";
 
 export const api = axios.create({

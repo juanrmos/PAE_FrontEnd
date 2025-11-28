@@ -14,3 +14,4 @@ export * from "./Toast";
 export * from "./Sheet";
 export * from "./Tabs";
 export * from "./Scrollarea";
+export * from "./DropdownMenu";

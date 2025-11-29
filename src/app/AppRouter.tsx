@@ -1,16 +1,17 @@
-// src/app/AppRouter.tsx
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { Toaster } from '../components/ui/Toaster';
 import { AuthProvider } from '../context/AuthContext';
 
-// Layouts
+// Layouts & Guards
 import { TeacherLayout } from '../components/layout/TeacherLayout';
 import { StudentLayout } from '../components/layout/StudentLayout';
 import { ProtectedRoute } from '../components/layout/ProtectedRoute';
+import { PublicRoute } from '../components/layout/PublicRoute'; 
 
-// --- AUTH ---
+// ... (Tus otros imports se mantienen igual)
 import Login from '../pages/auth/Login';
 import Register from '../pages/auth/Register';
+
 
 // --- TEACHER ---
 import TeacherDashboard from '../pages/teacher/Dashboard';
@@ -24,8 +25,6 @@ import TeacherGroupsExplore from '../pages/teacher/groups/Explore';
 import TeacherForums from '../pages/teacher/groups/Forums';
 import TeacherMyForums from '../pages/teacher/groups/MyForums';
 
-// --- STUDENT ---
-// ✅ CORRECCIÓN: Importar el Dashboard de estudiantes
 import StudentDashboard from '../pages/student/Dashboard';
 import StudentExplore from '../pages/student/repositories/Explore'; 
 import StudentFavorites from '../pages/student/repositories/Favorites'; 
@@ -45,38 +44,34 @@ import Trivia from '../pages/learning/Trivia';
 // --- PROFILE (COMPARTIDO) ---
 import Profile from '../pages/Profile';
 
-// --- PUBLIC ---
-import NotFound from '../pages/NotFound';
+
 import Landing from '../pages/Landing';
+import NotFound from '../pages/NotFound';
+import Placeholder from '../pages/Placeholder';
 
-const TeacherLayoutWrapper = () => (
-  <TeacherLayout>
-    <Outlet />
-  </TeacherLayout>
-);
 
-const StudentLayoutWrapper = () => (
-  <StudentLayout>
-    <Outlet />
-  </StudentLayout>
-);
+
+const TeacherLayoutWrapper = () => <TeacherLayout><Outlet /></TeacherLayout>;
+const StudentLayoutWrapper = () => <StudentLayout><Outlet /></StudentLayout>;
 
 export const AppRouter = () => {
   return (
     <BrowserRouter>
       <AuthProvider>
         <Routes>
-          {/* RUTAS PÚBLICAS */}
+          {/* RUTAS PÚBLICAS GENERALES */}
           <Route path="/" element={<Landing />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          
+          <Route element={<PublicRoute />}>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/forgot-password" element={<Placeholder />} />
+          </Route>
 
           {/* ZONA DOCENTE */}
           <Route element={<ProtectedRoute allowedRoles={['docente']} />}>
             <Route element={<TeacherLayoutWrapper />}>
               <Route path="/docente" element={<TeacherDashboard />} />
-              
-              {/* Repositorios Docente */}
               <Route path="/docente/repositorios" element={<Navigate to="/docente/repositorios/explorar" replace />} />
               <Route path="/docente/repositorios/explorar" element={<TeacherExplore />} />
               <Route path="/docente/repositorios/mis-repos" element={<TeacherRepoList />} />
@@ -103,16 +98,17 @@ export const AppRouter = () => {
               
               {/* Fallback Docente */}
               <Route path="/docente/*" element={<Navigate to="/docente" replace />} />
+
             </Route>
           </Route>
 
           {/* ZONA ESTUDIANTE */}
           <Route element={<ProtectedRoute allowedRoles={['estudiante']} />}>
             <Route element={<StudentLayoutWrapper />}>
-              {/* ✅ CORRECCIÓN: Redirigir a Dashboard en lugar de Explorar */}
               <Route path="/estudiante" element={<StudentDashboard />} />
               
-              {/* Repositorios Estudiante */}
+              {/* ✅ CORRECCIÓN: Rutas de Repositorios Estudiante */}
+              <Route path="/estudiante/repositorios" element={<Navigate to="/estudiante/explorar" replace />} />
               <Route path="/estudiante/explorar" element={<StudentExplore />} />
               <Route path="/estudiante/biblioteca" element={<StudentFavorites />} />
               
@@ -139,10 +135,8 @@ export const AppRouter = () => {
             </Route>
           </Route>
 
-          {/* FALLBACK GLOBAL (404) */}
           <Route path="*" element={<NotFound />} />
         </Routes>
-        
         <Toaster />
       </AuthProvider>
     </BrowserRouter>

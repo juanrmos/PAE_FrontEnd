@@ -37,7 +37,7 @@ export const StudentLayout = ({ children }: Props) => {
   let backRoute = undefined;
 
   // ✅ CORRECCIÓN: Detectar correctamente las rutas de estudiante
-  if (location.pathname.includes("/explorar") || location.pathname.includes("/biblioteca")) {
+  if (location.pathname.includes("/explorar") || location.pathname.includes("/biblioteca") || location.pathname.includes("/repositorios")) {
     currentMenu = REPO_MENU_STUDENT;
     sidebarTitle = "Repositorio";
     backRoute = "/estudiante";

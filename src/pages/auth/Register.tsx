@@ -19,7 +19,7 @@ const Register = () => {
             <RegisterForm />
           </CardContent>
           <CardFooter className="justify-center text-sm text-muted-foreground">
-            ¿Ya tienes cuenta? <Link to="/" className="text-brand-action hover:underline ml-1">Inicia Sesión</Link>
+            ¿Ya tienes cuenta? <Link to="/login" className="text-brand-action hover:underline ml-1">Inicia Sesión</Link>
           </CardFooter>
         </Card>
       </div>

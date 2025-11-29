@@ -1,3 +1,5 @@
+// src/components/layout/ProtectedRoute.tsx
+
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { Skeleton } from '../../desingSystem/primitives';

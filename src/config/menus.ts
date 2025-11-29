@@ -19,11 +19,9 @@ export const TEACHER_MAIN_MENU: SidebarItem[] = [
   { label: "Mi Perfil", to: "/docente/perfil", icon: User },
 ];
 
-// ✅ CORRECCIÓN: Agregar Dashboard como primera opción
 export const STUDENT_MAIN_MENU: SidebarItem[] = [
   { label: "Dashboard", to: "/estudiante", icon: Home },
-  { label: "Explorar", to: "/estudiante/explorar", icon: Globe },
-  { label: "Mi Biblioteca", to: "/estudiante/biblioteca", icon: LibraryBig },
+  { label: "Repositorios", to: "/estudiante/repositorios", icon: LibraryBig },
   { label: "Comunidades", to: "/estudiante/grupos", icon: Users },
   { label: "Simulacros", to: "/estudiante/aprendizaje/simulacros", icon: ClipboardList },
   { label: "Desafíos", to: "/estudiante/aprendizaje/desafios", icon: Gamepad2 },
@@ -40,8 +38,8 @@ export const REPO_MENU_TEACHER: SidebarItem[] = [
 ];
 
 export const REPO_MENU_STUDENT: SidebarItem[] = [
-  { label: "Repositorios (Públicos)", to: "/estudiante/explorar", icon: Globe },
-  { label: "Favoritos", to: "/estudiante/biblioteca", icon: Star },
+  { label: "Explorar Repositorios", to: "/estudiante/explorar", icon: Globe },
+  { label: "Mis Favoritos", to: "/estudiante/biblioteca", icon: Star },
 ];
 
 // --- 3. SUB-MENÚS: GRUPOS (Contextual) ---

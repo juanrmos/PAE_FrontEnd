@@ -1,7 +1,9 @@
+// src/components/layout/Sidebar.tsx
 import { NavLink, Link } from "react-router-dom";
 import { cn } from "../../utils/cn";
 import { ScrollArea } from "../../desingSystem/primitives";
-import { type LucideIcon, ArrowLeft, Home } from "lucide-react"; // Importamos Home y ArrowLefta
+import { type LucideIcon, Home } from "lucide-react";
+import { BRAND_CONFIG } from "../../config/brandConfig";
 
 export interface SidebarItem {
   label: string;
@@ -23,7 +25,7 @@ export function Sidebar({
   className, 
   onClose, 
   items = DEFAULT_ITEMS, 
-  title = "Pulse", 
+  title = BRAND_CONFIG.name, // ✅ Usa configuración de marca
   backRoute 
 }: SidebarProps) {
   return (
@@ -38,7 +40,7 @@ export function Sidebar({
             className="flex items-center gap-2 text-neutral-600 hover:text-brand-action transition-colors mb-4 group"
           >
             <div className="h-8 w-8 rounded-lg bg-neutral-100 flex items-center justify-center group-hover:bg-brand-action/10">
-              <Home className="h-4 w-4" /> {/* Casita */}
+              <Home className="h-4 w-4" />
             </div>
             <div className="flex flex-col">
               <span className="text-xs font-medium text-neutral-400">Volver a</span>
@@ -47,12 +49,17 @@ export function Sidebar({
           </Link>
         ) : (
           <Link to="/" onClick={onClose} className="flex items-center gap-2 mb-2">
-            <div className="h-8 w-8 rounded-lg bg-brand-action" />
-            <span className="text-xl font-extrabold text-primary-contrast">{title}</span>
+            {/* ✅ Logo unificado */}
+            <div className="h-8 w-8 rounded-lg bg-brand-action flex items-center justify-center">
+              <span className="text-white font-bold text-sm">
+                {BRAND_CONFIG.logo.fallbackIcon}
+              </span>
+            </div>
+            <span className="text-xl font-extrabold text-primary-contrast">{BRAND_CONFIG.name}</span>
           </Link>
         )}
 
-        {/* Título del contexto si es submenú (Opcional, si title cambia) */}
+        {/* Título del contexto si es submenú */}
         {backRoute && (
           <h2 className="text-xl font-bold text-primary-contrast px-1 mb-2">{title}</h2>
         )}

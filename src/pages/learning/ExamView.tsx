@@ -1,18 +1,20 @@
-// src/pages/learning/ExamView.tsx - VERSIÓN CORREGIDA
+// src/pages/learning/ExamView.tsx
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Clock, AlertCircle, ChevronLeft, ChevronRight, Flag, CheckCircle } from "lucide-react";
-import { Card, Button, Badge } from "../../desingSystem/primitives";
+import {
+  Card,
+  Button,
+  Badge,
+} from "../../desingSystem/primitives";
 import { submitSimulacro, type SimulacroResult, type SimulacroSubmission } from "../../features/learning/services/learningService";
 import { useToast } from "../../hooks/useToast";
-import { useAuth } from "../../context/AuthContext";
 import styles from "../../features/learning/components/learning.module.css";
 
 const ExamView = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
-  const { user } = useAuth();
   
   const simulacro = location.state?.simulacro as SimulacroResult | undefined;
 
@@ -25,25 +27,16 @@ const ExamView = () => {
   const [markedForReview, setMarkedForReview] = useState<Set<number>>(new Set());
   const [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
 
-  // Usar useRef para almacenar valores actuales sin causar re-renders
-  const answersRef = useRef(answers);
-  const simulacroRef = useRef(simulacro);
-  const timeRemainingRef = useRef(timeRemaining);
+  // ✅ CORRECCIÓN 1: Usar 'number' en lugar de NodeJS.Timeout para el navegador
+  const timerRef = useRef<number | null>(null);
 
-  // Actualizar refs cuando cambien los valores
-  useEffect(() => {
-    answersRef.current = answers;
-  }, [answers]);
+  // Detectar rol del usuario para navegación
+  const userRole = localStorage.getItem("role") as "docente" | "estudiante";
+  const basePath = userRole === "docente" ? "/docente" : "/estudiante";
 
-  useEffect(() => {
-    timeRemainingRef.current = timeRemaining;
-  }, [timeRemaining]);
-
-  const basePath = user?.role === 'docente' ? '/docente' : '/estudiante';
-
-  // Función de auto-submit estable con useCallback
+  // ✅ CORRECCIÓN 2: Definición única y completa de handleAutoSubmit antes de su uso
   const handleAutoSubmit = useCallback(async () => {
-    if (!simulacroRef.current) return;
+    if (!simulacro) return;
 
     toast({
       variant: "destructive",
@@ -54,9 +47,9 @@ const ExamView = () => {
     setIsSubmitting(true);
     try {
       const submission: SimulacroSubmission = {
-        simulacroId: simulacroRef.current.id,
-        answers: answersRef.current.map((a) => a ?? -1),
-        timeSpent: simulacroRef.current.timeLimit - timeRemainingRef.current,
+        simulacroId: simulacro.id,
+        answers: answers.map((a) => a ?? -1),
+        timeSpent: simulacro.timeLimit - timeRemaining,
       };
 
       const result = await submitSimulacro(submission);
@@ -73,44 +66,39 @@ const ExamView = () => {
       });
       setIsSubmitting(false);
     }
-  }, [navigate, toast, basePath]);
+  }, [answers, simulacro, timeRemaining, navigate, toast, basePath]);
 
-  // Timer con cleanup apropiado
+  // Timer
   useEffect(() => {
     if (!simulacro || timeRemaining <= 0) return;
 
-    const timer = setInterval(() => {
+    // Usamos window.setInterval explícitamente para asegurar que devuelve un número
+    timerRef.current = window.setInterval(() => {
       setTimeRemaining((prev) => {
-        const newTime = prev - 1;
-        
-        // Auto-submit cuando llegue a 0
-        if (newTime <= 0) {
-          clearInterval(timer);
+        if (prev <= 1) {
+          if (timerRef.current) clearInterval(timerRef.current);
           handleAutoSubmit();
           return 0;
         }
-        
-        return newTime;
+        return prev - 1;
       });
     }, 1000);
 
     return () => {
-      clearInterval(timer);
+      if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [simulacro, handleAutoSubmit]);
+  }, [simulacro, handleAutoSubmit]); // Eliminado timeRemaining de dependencias para evitar renders infinitos
 
   // Advertencia al salir
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      if (!isSubmitting && timeRemaining > 0) {
-        e.preventDefault();
-        e.returnValue = "";
-      }
+      e.preventDefault();
+      e.returnValue = "";
     };
 
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
-  }, [isSubmitting, timeRemaining]);
+  }, []);
 
   if (!simulacro) {
     return (
@@ -121,7 +109,7 @@ const ExamView = () => {
           <p className="text-muted-foreground mb-4">
             No hay un examen activo. Por favor inicia uno nuevo.
           </p>
-          <Button onClick={() => navigate(`${basePath}/aprendizaje/simulacros`)}>
+          <Button onClick={() => navigate("/docente/aprendizaje/simulacros")}>
             Volver a Simulacros
           </Button>
         </Card>
@@ -130,7 +118,6 @@ const ExamView = () => {
   }
 
   const currentQuestion = simulacro.questions[currentQuestionIndex];
-  
   const formatTime = (seconds: number) => {
     const hrs = Math.floor(seconds / 3600);
     const mins = Math.floor((seconds % 3600) / 60);
@@ -166,6 +153,7 @@ const ExamView = () => {
     }
   };
 
+  // ✅ handleSubmit manual (sin duplicar handleAutoSubmit)
   const handleSubmit = async () => {
     const unanswered = answers.filter((a) => a === null).length;
     
@@ -202,7 +190,7 @@ const ExamView = () => {
   };
 
   const answeredCount = answers.filter((a) => a !== null).length;
-  const isTimeWarning = timeRemaining < 300;
+  const isTimeWarning = timeRemaining < 300; // Últimos 5 minutos
   const unansweredCount = answers.filter((a) => a === null).length;
 
   return (

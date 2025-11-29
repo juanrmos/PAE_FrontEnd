@@ -1,3 +1,4 @@
+// src/features/auth/components/LoginForm.tsx
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -14,7 +15,8 @@ import {
   FormMessage 
 } from "../../../desingSystem/primitives";
 
-import { useAuth } from "../hooks/useAuth";
+// ✅ CORRECCIÓN: Usar el AuthContext principal en lugar del hook duplicado
+import { useAuth } from "../../../context/AuthContext";
 import styles from "./auth.module.css";
 
 const formSchema = z.object({
@@ -23,6 +25,7 @@ const formSchema = z.object({
 });
 
 export function LoginForm() {
+  // ✅ Ahora usa el contexto correcto
   const { login, isLoading } = useAuth();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -30,8 +33,9 @@ export function LoginForm() {
     defaultValues: { email: "", password: "" },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    login(values);
+  // ✅ La función de login ya maneja la redirección correcta
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    await login(values.email, values.password);
   }
 
   return (

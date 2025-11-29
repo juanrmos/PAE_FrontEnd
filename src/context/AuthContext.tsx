@@ -1,4 +1,4 @@
-// src/contexts/AuthContext.tsx
+// src/context/AuthContext.tsx
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '../hooks/useToast';
@@ -30,7 +30,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // Inicializar desde localStorage
+  // ✅ Inicializar desde localStorage
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
     const storedUser = localStorage.getItem('user');
@@ -49,6 +49,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoading(false);
   }, []);
 
+  // ✅ Login con redirección correcta
   const login = useCallback(async (email: string, password: string) => {
     setIsLoading(true);
     try {
@@ -67,7 +68,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       const mockToken = 'mock-jwt-' + Date.now();
 
-      // Guardar en estado y localStorage
+      // ✅ Guardar en estado y localStorage
       setUser(mockUser);
       setToken(mockToken);
       localStorage.setItem('token', mockToken);
@@ -78,9 +79,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         description: `Ingresaste como ${mockUser.role}`,
       });
 
-      // Redirigir según rol
-      const basePath = mockUser.role === 'docente' ? '/docente' : '/estudiante/explorar';
-      navigate(basePath, { replace: true });
+      // ✅ CORRECCIÓN: Redirigir correctamente según rol
+      if (mockUser.role === 'docente') {
+        navigate('/docente', { replace: true });
+      } else {
+        navigate('/estudiante', { replace: true }); // ✅ Ahora va al Dashboard
+      }
 
     } catch (error) {
       toast({
@@ -94,6 +98,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, [navigate, toast]);
 
+  // ✅ Logout mejorado
   const logout = useCallback(() => {
     setUser(null);
     setToken(null);

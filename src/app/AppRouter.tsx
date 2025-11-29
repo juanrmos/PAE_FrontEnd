@@ -1,3 +1,4 @@
+// src/app/AppRouter.tsx
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { Toaster } from '../components/ui/Toaster';
 import { AuthProvider } from '../context/AuthContext';
@@ -24,6 +25,8 @@ import TeacherForums from '../pages/teacher/groups/Forums';
 import TeacherMyForums from '../pages/teacher/groups/MyForums';
 
 // --- STUDENT ---
+// ✅ CORRECCIÓN: Importar el Dashboard de estudiantes
+import StudentDashboard from '../pages/student/Dashboard';
 import StudentExplore from '../pages/student/repositories/Explore'; 
 import StudentFavorites from '../pages/student/repositories/Favorites'; 
 import StudentGroupList from '../pages/student/groups/List';
@@ -70,7 +73,6 @@ export const AppRouter = () => {
 
           {/* ZONA DOCENTE */}
           <Route element={<ProtectedRoute allowedRoles={['docente']} />}>
-            {/* Usamos el Wrapper en lugar del Layout directo */}
             <Route element={<TeacherLayoutWrapper />}>
               <Route path="/docente" element={<TeacherDashboard />} />
               
@@ -106,10 +108,9 @@ export const AppRouter = () => {
 
           {/* ZONA ESTUDIANTE */}
           <Route element={<ProtectedRoute allowedRoles={['estudiante']} />}>
-            {/* Usamos el Wrapper en lugar del Layout directo */}
             <Route element={<StudentLayoutWrapper />}>
-              {/* Redirigir rutas base a explorar */}
-              <Route path="/estudiante" element={<Navigate to="/estudiante/explorar" replace />} />
+              {/* ✅ CORRECCIÓN: Redirigir a Dashboard en lugar de Explorar */}
+              <Route path="/estudiante" element={<StudentDashboard />} />
               
               {/* Repositorios Estudiante */}
               <Route path="/estudiante/explorar" element={<StudentExplore />} />
@@ -134,7 +135,7 @@ export const AppRouter = () => {
               <Route path="/estudiante/perfil" element={<Profile />} />
               
               {/* Fallback Estudiante */}
-              <Route path="/estudiante/*" element={<Navigate to="/estudiante/explorar" replace />} />
+              <Route path="/estudiante/*" element={<Navigate to="/estudiante" replace />} />
             </Route>
           </Route>
 

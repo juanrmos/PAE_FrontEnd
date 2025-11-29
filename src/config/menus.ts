@@ -1,17 +1,16 @@
 // src/config/menus.ts
 
-//!Arreglar la redireccion de estudiantes a la biblioteca de repositorios. Actualmente solo lo redirigue a explorar
 import { 
   BarChart3, FolderOpen, Users, Globe, Star, 
   LibraryBig, MessageSquare, ClipboardList, 
-  Gamepad2, Zap, User
+  Gamepad2, Zap, User, Home
 } from "lucide-react";
 import type { SidebarItem } from "../components/layout/Sidebar";
 
 // --- 1. MENÚS PRINCIPALES (DASHBOARD) ---
 
 export const TEACHER_MAIN_MENU: SidebarItem[] = [
-  { label: "Dashboard", to: "/docente", icon: BarChart3 },
+  { label: "Dashboard", to: "/docente", icon: Home },
   { label: "Biblioteca de Repositorios", to: "/docente/repositorios", icon: LibraryBig }, 
   { label: "Comunidades", to: "/docente/grupos", icon: Users },
   { label: "Simulacros", to: "/docente/aprendizaje/simulacros", icon: ClipboardList },
@@ -20,7 +19,9 @@ export const TEACHER_MAIN_MENU: SidebarItem[] = [
   { label: "Mi Perfil", to: "/docente/perfil", icon: User },
 ];
 
+// ✅ CORRECCIÓN: Agregar Dashboard como primera opción
 export const STUDENT_MAIN_MENU: SidebarItem[] = [
+  { label: "Dashboard", to: "/estudiante", icon: Home },
   { label: "Explorar", to: "/estudiante/explorar", icon: Globe },
   { label: "Mi Biblioteca", to: "/estudiante/biblioteca", icon: LibraryBig },
   { label: "Comunidades", to: "/estudiante/grupos", icon: Users },
@@ -39,7 +40,7 @@ export const REPO_MENU_TEACHER: SidebarItem[] = [
 ];
 
 export const REPO_MENU_STUDENT: SidebarItem[] = [
-  { label: "Repositorios (Públicos)", to: "/estudiante/repositorios/explorar", icon: Globe },
+  { label: "Repositorios (Públicos)", to: "/estudiante/explorar", icon: Globe },
   { label: "Favoritos", to: "/estudiante/biblioteca", icon: Star },
 ];
 
@@ -58,7 +59,6 @@ export const GROUPS_MENU_STUDENT: SidebarItem[] = [
   { label: "Foros Públicos", to: "/estudiante/grupos/foros", icon: MessageSquare },
   { label: "Mis Foros", to: "/estudiante/grupos/mis-foros", icon: ClipboardList },
 ];
-
 
 export const LEARNING_MENU_TEACHER: SidebarItem[] = [
   { label: "Simulacros", to: "/docente/aprendizaje/simulacros", icon: ClipboardList },

@@ -7,7 +7,7 @@ const Register = () => {
     <div className="min-h-screen flex items-center justify-center bg-neutral-50 p-4">
       <div className="w-full max-w-lg space-y-6">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-primary-contrast">Únete a Pulse</h1>
+          <h1 className="text-2xl font-bold text-primary-contrast">Únete a PAE</h1>
         </div>
 
         <Card className="shadow-lg border-neutral-200/60">

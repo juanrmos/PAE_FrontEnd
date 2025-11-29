@@ -19,7 +19,7 @@ const Login = () => {
             <span className="text-white font-bold text-xl">P</span>
           </div>
           <h1 className="text-2xl font-bold tracking-tight text-primary-contrast">
-            Bienvenido a Pulse
+            Bienvenido a PAE
           </h1>
           <p className="text-sm text-muted-foreground">
             Plataforma de Apoyo Estudiantil

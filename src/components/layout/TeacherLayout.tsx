@@ -1,13 +1,26 @@
 import { useState } from "react";
-import { useLocation } from "react-router-dom"; // Importante
+import { useLocation } from "react-router-dom";
 import { Menu } from "lucide-react";
 import { Toaster } from "../ui/Toaster";
 import { Sidebar } from "./Sidebar";
-import { Sheet, SheetContent, SheetTrigger } from "../../desingSystem/primitives";
+import { 
+  Sheet, 
+  SheetContent, 
+  SheetTrigger, 
+  SheetHeader, 
+  SheetTitle, 
+  SheetDescription 
+} from "../../desingSystem/primitives/Sheet";
 import { Button } from "../../desingSystem/primitives";
 import { useIsMobile } from "../../hooks/useMobile";
+import { BRAND_CONFIG } from "../../config/brandConfig";
+
 // Importamos todos los menús
-import { TEACHER_MAIN_MENU, REPO_MENU_TEACHER, GROUPS_MENU_TEACHER } from "../../config/menus";
+import { 
+  TEACHER_MAIN_MENU, 
+  REPO_MENU_TEACHER, 
+  GROUPS_MENU_TEACHER 
+} from "../../config/menus";
 
 interface Props {
   children: React.ReactNode;
@@ -16,7 +29,7 @@ interface Props {
 export const TeacherLayout = ({ children }: Props) => {
   const isMobile = useIsMobile();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const location = useLocation(); // Hook para leer la URL actual
+  const location = useLocation();
 
   // --- LÓGICA DE SELECCIÓN DE MENÚ ---
   let currentMenu = TEACHER_MAIN_MENU;
@@ -26,13 +39,12 @@ export const TeacherLayout = ({ children }: Props) => {
   if (location.pathname.includes("/repositorios")) {
     currentMenu = REPO_MENU_TEACHER;
     sidebarTitle = "Repositorio";
-    backRoute = "/docente"; // Volver al Dashboard
+    backRoute = "/docente";
   } else if (location.pathname.includes("/grupos")) {
     currentMenu = GROUPS_MENU_TEACHER;
     sidebarTitle = "Comunidades";
     backRoute = "/docente";
   }
-  // -----------------------------------
 
   return (
     <div className="flex min-h-screen w-full bg-neutral-50">
@@ -42,7 +54,7 @@ export const TeacherLayout = ({ children }: Props) => {
           className="bg-white border-r-neutral-200" 
           items={currentMenu} 
           title={sidebarTitle}
-          backRoute={backRoute} // Pasamos la ruta de retorno
+          backRoute={backRoute}
         /> 
       </div>
 
@@ -56,6 +68,14 @@ export const TeacherLayout = ({ children }: Props) => {
                  </Button>
                </SheetTrigger>
                <SheetContent side="left" className="p-0 w-72">
+                 {/* ✅ CORRECCIÓN ACCESIBILIDAD: Título y descripción ocultos */}
+                 <SheetHeader className="sr-only">
+                   <SheetTitle>Menú de Navegación Docente</SheetTitle>
+                   <SheetDescription>
+                     Acceso a las opciones principales del panel de docente.
+                   </SheetDescription>
+                 </SheetHeader>
+
                  <Sidebar 
                    onClose={() => setIsSidebarOpen(false)} 
                    items={currentMenu} 
@@ -64,7 +84,15 @@ export const TeacherLayout = ({ children }: Props) => {
                  />
                </SheetContent>
              </Sheet>
-             <div className="font-bold text-lg text-primary-contrast">Pulse {sidebarTitle}</div>
+             {/* ✅ CORRECCIÓN: Usar marca unificada */}
+             <div className="flex items-center gap-2 font-bold text-lg text-primary-contrast">
+               <div className="h-6 w-6 rounded bg-brand-action flex items-center justify-center">
+                 <span className="text-white text-xs font-extrabold">
+                   {BRAND_CONFIG.logo.fallbackIcon}
+                 </span>
+               </div>
+               <span>{BRAND_CONFIG.name} {sidebarTitle}</span>
+             </div>
            </header>
         )}
 

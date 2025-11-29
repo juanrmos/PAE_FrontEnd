@@ -1,34 +1,49 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Loader2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
-// Primitivas
+// Importaciones corregidas con la ruta que usas (desingSystem)
 import { 
   Button, Input, Form, FormControl, FormField, FormItem, FormLabel, FormMessage, Checkbox 
-} from "../../../desingSystem/primitives";
+} from "../../../desingSystem/primitives"; //
 
-import { useAuth } from "../hooks/useAuth";
+import { register as registerService } from "../services/authServices";
+import { useToast } from "../../../hooks/useToast";
 import styles from "./auth.module.css";
 
-// Refactorizar.
+// ✅ CORRECCIÓN 1: Esquema Zod Estricto
 const registerSchema = z.object({
-  name: z.string().min(2, { message: "El nombre debe tener al menos 2 caracteres" }),
-  email: z.string().email({ message: "Correo inválido" }),
-  password: z.string().min(6, { message: "Mínimo 6 caracteres" }),
+  name: z
+    .string()
+    .min(2, { message: "El nombre debe tener al menos 2 caracteres" })
+    .max(100, { message: "El nombre es demasiado largo" })
+    .regex(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/, { message: "El nombre solo puede contener letras" }),
+  email: z
+    .string()
+    .email({ message: "Correo inválido" })
+    .toLowerCase(),
+  password: z
+    .string()
+    .min(6, { message: "Mínimo 6 caracteres" })
+    .max(100, { message: "La contraseña es demasiado larga" }),
   confirmPassword: z.string(),
-
-  isTeacher: z.boolean(),  // ❌ Inferido como boolean, pero form puede tener undefined
+  // 🔥 CAMBIO CLAVE: Eliminamos .default(false)
+  // Como ya lo inicializamos en useForm, solo necesitamos validar que sea booleano.
+  isTeacher: z.boolean(), 
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Las contraseñas no coinciden",
   path: ["confirmPassword"],
 });
 
-// Tipo inferido
 type RegisterFormValues = z.infer<typeof registerSchema>;
 
 export function RegisterForm() {
-  const { register, isLoading } = useAuth();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
@@ -37,12 +52,39 @@ export function RegisterForm() {
       email: "", 
       password: "", 
       confirmPassword: "", 
-      isTeacher: false // Valor inicial explícito
+      isTeacher: false // ✅ Aquí garantizamos el valor inicial
     },
   });
 
-  function onSubmit(values: RegisterFormValues) {
-    register(values);
+  async function onSubmit(values: RegisterFormValues) {
+    setIsLoading(true);
+    try {
+      const response = await registerService(values);
+      
+      localStorage.setItem("token", response.token);
+      localStorage.setItem("role", response.user.role);
+      localStorage.setItem("user", JSON.stringify(response.user));
+
+      toast({
+        title: "Cuenta creada",
+        description: "Tu registro ha sido exitoso",
+      });
+
+      const basePath = response.user.role === "docente" ? "/docente" : "/estudiante";
+      navigate(basePath, { replace: true });
+      
+      window.dispatchEvent(new CustomEvent("auth-change", { 
+        detail: { user: response.user } 
+      }));
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error en registro",
+        description: "No se pudo crear la cuenta. Intenta nuevamente.",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (

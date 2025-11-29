@@ -32,11 +32,12 @@ export const StudentLayout = ({ children }: Props) => {
   const location = useLocation();
 
   // --- LÓGICA DE SELECCIÓN DE MENÚ ---
+  
+  // ✅ CORRECCIÓN: Definir tipos explícitamente para permitir cambios
   let currentMenu = STUDENT_MAIN_MENU;
-  let sidebarTitle = "Estudiante";
-  let backRoute = undefined;
+  let sidebarTitle: string = BRAND_CONFIG.name; // Permite cualquier string
+  let backRoute: string | undefined = undefined; // Permite string o undefined
 
-  // ✅ CORRECCIÓN: Detectar correctamente las rutas de estudiante
   if (location.pathname.includes("/explorar") || location.pathname.includes("/biblioteca") || location.pathname.includes("/repositorios")) {
     currentMenu = REPO_MENU_STUDENT;
     sidebarTitle = "Repositorio";
@@ -69,11 +70,10 @@ export const StudentLayout = ({ children }: Props) => {
                  </Button>
                </SheetTrigger>
                <SheetContent side="left" className="p-0 w-72">
-                 {/* ✅ CORRECCIÓN ACCESIBILIDAD: Título y descripción ocultos visualmente pero legibles por screen readers */}
                  <SheetHeader className="sr-only">
-                   <SheetTitle>Menú de Navegación Estudiante</SheetTitle>
+                   <SheetTitle>Menú de Navegación</SheetTitle>
                    <SheetDescription>
-                     Acceso a las opciones principales del panel de estudiante.
+                     Acceso a las opciones principales del panel.
                    </SheetDescription>
                  </SheetHeader>
 
@@ -85,14 +85,15 @@ export const StudentLayout = ({ children }: Props) => {
                  />
                </SheetContent>
              </Sheet>
-             {/* ✅ CORRECCIÓN: Usar marca unificada */}
+             
+             {/* Logo de marca en móvil */}
              <div className="flex items-center gap-2 font-bold text-lg text-primary-contrast">
                <div className="h-6 w-6 rounded bg-brand-action flex items-center justify-center">
                  <span className="text-white text-xs font-extrabold">
                    {BRAND_CONFIG.logo.fallbackIcon}
                  </span>
                </div>
-               <span>{BRAND_CONFIG.name} {sidebarTitle}</span>
+               <span>{BRAND_CONFIG.name}</span>
              </div>
            </header>
         )}

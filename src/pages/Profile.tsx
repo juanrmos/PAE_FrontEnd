@@ -1,8 +1,8 @@
-// src/pages/common/Profile.tsx
+// src/pages/Profile.tsx
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Camera, Copy, Check, LogOut, Clock, Monitor } from "lucide-react";
+import { Camera, Copy, Check, LogOut, Clock, Monitor, AlertTriangle } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -33,16 +33,21 @@ import {
   FormMessage,
   Skeleton,
   Checkbox,
+  Separator,
 } from "../desingSystem/primitives";
 import { useProfile } from "../features/profile/hooks/useProfile";
+import { useAuth } from "../context/AuthContext";
 import { profileSchema, passwordSchema, type ProfileFormData, type PasswordFormData } from "../features/profile/schemas";
 
 const Profile = () => {
   const { user, stats, sessions, isLoading, isUpdating, updateProfile, updatePassword, logoutAllSessions } = useProfile();
+  const { logout } = useAuth();
   const [copiedId, setCopiedId] = useState(false);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
   // Form para edición de perfil
-  const profileForm = useForm<ProfileFormData>({
+  // ✅ CORRECCIÓN 1: Eliminamos <ProfileFormData> para evitar conflicto de tipos opcionales vs required keys
+  const profileForm = useForm({
     resolver: zodResolver(profileSchema),
     values: user ? {
       firstName: user.firstName,
@@ -54,7 +59,8 @@ const Profile = () => {
   });
 
   // Form para cambio de contraseña
-  const passwordForm = useForm<PasswordFormData>({
+  // ✅ CORRECCIÓN 2: Eliminamos <PasswordFormData> para permitir inferencia automática
+  const passwordForm = useForm({
     resolver: zodResolver(passwordSchema),
     defaultValues: {
       currentPassword: "",
@@ -71,13 +77,19 @@ const Profile = () => {
     }
   };
 
-  const onProfileSubmit = (data: ProfileFormData) => {
-    updateProfile(data);
+  // ✅ CORRECCIÓN 3: Tipamos data como 'any' o usamos la inferencia para compatibilidad con el servicio
+  const onProfileSubmit = (data: any) => {
+    updateProfile(data as ProfileFormData);
   };
 
-  const onPasswordSubmit = (data: PasswordFormData) => {
-    updatePassword(data);
+  const onPasswordSubmit = (data: any) => {
+    updatePassword(data as PasswordFormData);
     passwordForm.reset();
+  };
+
+  const handleLogout = () => {
+    setShowLogoutConfirm(false);
+    logout();
   };
 
   if (isLoading || !user || !stats) {
@@ -159,6 +171,16 @@ const Profile = () => {
                 </div>
               </div>
             </div>
+
+            {/* Botón de Cerrar Sesión */}
+            <Button
+              variant="outline"
+              className="gap-2 text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700 hover:border-red-300"
+              onClick={() => setShowLogoutConfirm(true)}
+            >
+              <LogOut className="h-4 w-4" />
+              Cerrar Sesión
+            </Button>
           </div>
         </CardContent>
       </Card>
@@ -528,6 +550,49 @@ const Profile = () => {
           </Card>
         </TabsContent>
       </Tabs>
+
+      {/* Modal de Confirmación de Logout */}
+      {showLogoutConfirm && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+          onClick={() => setShowLogoutConfirm(false)}
+        >
+          <Card 
+            className="max-w-md w-full p-6 animate-in fade-in zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-start gap-4 mb-6">
+              <div className="p-3 bg-red-100 rounded-full">
+                <AlertTriangle className="h-6 w-6 text-red-600" />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-primary-contrast mb-2">
+                  ¿Cerrar Sesión?
+                </h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Estás a punto de cerrar tu sesión. Tendrás que volver a iniciar sesión para acceder a tu cuenta.
+                </p>
+              </div>
+            </div>
+            <Separator className="mb-4" />
+            <div className="flex gap-3">
+              <Button
+                variant="outline"
+                onClick={() => setShowLogoutConfirm(false)}
+                className="flex-1"
+              >
+                Cancelar
+              </Button>
+              <Button
+                onClick={handleLogout}
+                className="flex-1 bg-red-600 hover:bg-red-700 text-white"
+              >
+                Cerrar Sesión
+              </Button>
+            </div>
+          </Card>
+        </div>
+      )}
     </div>
   );
 };

@@ -32,9 +32,11 @@ export const TeacherLayout = ({ children }: Props) => {
   const location = useLocation();
 
   // --- LÓGICA DE SELECCIÓN DE MENÚ ---
+  
+  // ✅ CORRECCIÓN: Tipado explícito aquí también
   let currentMenu = TEACHER_MAIN_MENU;
-  let sidebarTitle = "Docente";
-  let backRoute = undefined;
+  let sidebarTitle: string = BRAND_CONFIG.name;
+  let backRoute: string | undefined = undefined;
 
   if (location.pathname.includes("/repositorios")) {
     currentMenu = REPO_MENU_TEACHER;
@@ -68,11 +70,10 @@ export const TeacherLayout = ({ children }: Props) => {
                  </Button>
                </SheetTrigger>
                <SheetContent side="left" className="p-0 w-72">
-                 {/* ✅ CORRECCIÓN ACCESIBILIDAD: Título y descripción ocultos */}
                  <SheetHeader className="sr-only">
-                   <SheetTitle>Menú de Navegación Docente</SheetTitle>
+                   <SheetTitle>Menú de Navegación</SheetTitle>
                    <SheetDescription>
-                     Acceso a las opciones principales del panel de docente.
+                     Acceso a las opciones principales del panel.
                    </SheetDescription>
                  </SheetHeader>
 
@@ -84,14 +85,15 @@ export const TeacherLayout = ({ children }: Props) => {
                  />
                </SheetContent>
              </Sheet>
-             {/* ✅ CORRECCIÓN: Usar marca unificada */}
+             
+             {/* Logo de marca en móvil */}
              <div className="flex items-center gap-2 font-bold text-lg text-primary-contrast">
                <div className="h-6 w-6 rounded bg-brand-action flex items-center justify-center">
                  <span className="text-white text-xs font-extrabold">
                    {BRAND_CONFIG.logo.fallbackIcon}
                  </span>
                </div>
-               <span>{BRAND_CONFIG.name} {sidebarTitle}</span>
+               <span>{BRAND_CONFIG.name}</span>
              </div>
            </header>
         )}

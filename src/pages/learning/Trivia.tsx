@@ -166,21 +166,13 @@ const Trivia = () => {
                     <p className={styles.roomHost}>{room.host}</p>
                     <p className={styles.roomTopic}>{room.topic}</p>
                   </div>
-                  <Badge
-                    className={
-                      room.status === "waiting"
-                        ? styles.roomBadgeWaiting
-                        : room.status === "playing"
-                        ? styles.roomBadgePlaying
-                        : styles.roomBadgeFull
-                    }
-                  >
+                  <span className={styles.roomStatusText}>
                     {room.status === "waiting"
                       ? "Esperando"
                       : room.status === "playing"
                       ? "En juego"
                       : "Llena"}
-                  </Badge>
+                  </span>
                 </CardHeader>
 
                 <CardContent className="space-y-4">
@@ -205,7 +197,13 @@ const Trivia = () => {
                   </div>
 
                   <Button
-                    className={styles.roomJoinButton}
+                    variant="brand"
+                    className={`
+                      ${styles.roomJoinButton}
+                      disabled:!bg-brand-action/50
+                      disabled:!text-white
+                      disabled:cursor-not-allowed
+                    `}
                     onClick={() => joinRoom(room.id)}
                     disabled={
                       room.status !== "waiting" ||

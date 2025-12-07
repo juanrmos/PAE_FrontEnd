@@ -11,7 +11,7 @@ const StudentExplore = () => {
   return (
     <div className={styles.pageContainer}>
       {/* Hero Section Simple para Estudiante */}
-      <div className="bg-primary-contrast text-white rounded-2xl p-8 mb-8 relative overflow-hidden">
+      <div className="bg-gradient-to-r from-[#1E3A8A] to-[#00FF7F] text-white rounded-2xl p-8 mb-8 relative overflow-hidden">
         <div className="relative z-10">
           <h1 className="text-3xl font-bold mb-2">Explora y Aprende</h1>
           <p className="text-blue-100 max-w-lg mb-6">
@@ -20,7 +20,7 @@ const StudentExplore = () => {
           
           {/* Buscador Integrado en Hero */}
           <div className="relative w-full max-w-md text-neutral-900">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-brand-info" />
             <Input 
               placeholder="¿Qué quieres aprender hoy?" 
               className="pl-10 h-12 rounded-xl border-0 shadow-lg"

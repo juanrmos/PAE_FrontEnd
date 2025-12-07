@@ -3,7 +3,7 @@
 import { 
   BarChart3, FolderOpen, Users, Globe, Star, 
   LibraryBig, MessageSquare, ClipboardList, 
-  Gamepad2, Zap, User, Home
+  Gamepad2, Zap, User, Home, BookOpen
 } from "lucide-react";
 import type { SidebarItem } from "../components/layout/Sidebar";
 
@@ -17,6 +17,7 @@ export const TEACHER_MAIN_MENU: SidebarItem[] = [
   { label: "Desafíos", to: "/docente/aprendizaje/desafios", icon: Gamepad2 },
   { label: "Trivia Diaria", to: "/docente/aprendizaje/trivia", icon: Zap },
   { label: "Mi Perfil", to: "/docente/perfil", icon: User },
+  { label: "Cursos", to: "/docente/cursos", icon: BookOpen },
 ];
 
 export const STUDENT_MAIN_MENU: SidebarItem[] = [
@@ -27,6 +28,7 @@ export const STUDENT_MAIN_MENU: SidebarItem[] = [
   { label: "Desafíos", to: "/estudiante/aprendizaje/desafios", icon: Gamepad2 },
   { label: "Trivia Diaria", to: "/estudiante/aprendizaje/trivia", icon: Zap },
   { label: "Mi Perfil", to: "/estudiante/perfil", icon: User },
+  {label: "Cursos", to: "/estudiante/cursos", icon: BookOpen },
 ];
 
 // --- 2. SUB-MENÚS: REPOSITORIO (Contextual) ---

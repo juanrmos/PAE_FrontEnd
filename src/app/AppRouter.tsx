@@ -48,6 +48,8 @@ import Profile from '../pages/Profile';
 import Landing from '../pages/Landing';
 import NotFound from '../pages/NotFound';
 import Placeholder from '../pages/Placeholder';
+import Courses from "../pages/student/Courses";
+import CourseDetail from "../pages/student/CourseDetail";
 
 
 
@@ -130,6 +132,10 @@ export const AppRouter = () => {
               {/* Perfil Estudiante */}
               <Route path="/estudiante/perfil" element={<Profile />} />
               
+              {/* Cursos Estudiante */}
+              <Route path="/estudiante/cursos" element={<Courses />} />
+              <Route path="/estudiante/cursos/:courseTitle" element={<CourseDetail />} />
+
               {/* Fallback Estudiante */}
               <Route path="/estudiante/*" element={<Navigate to="/estudiante" replace />} />
             </Route>

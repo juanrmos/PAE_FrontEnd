@@ -36,7 +36,7 @@ export function ExploreGroupCard({ group, onJoinRequest, isJoining }: ExploreGro
       </div>
 
       <div>
-        <Badge className={styles.groupSubject}>{group.subject}</Badge>
+        <span className={styles.groupSubject}>{group.subject}</span>
         <h3 className={styles.groupTitle}>{group.name}</h3>
       </div>
 
@@ -60,8 +60,16 @@ export function ExploreGroupCard({ group, onJoinRequest, isJoining }: ExploreGro
         </div>
       )}
 
-      <Button 
-        className={styles.groupEnterButton}
+      <Button
+      className={`
+        !bg-brand-action 
+        !hover:bg-brand-action/90 
+        !text-white 
+        !rounded-lg 
+        !py-3 
+        w-full 
+        ${requested ? "opacity-80 cursor-default" : ""}
+  `   }
         onClick={handleJoin}
         disabled={isJoining || requested}
       >

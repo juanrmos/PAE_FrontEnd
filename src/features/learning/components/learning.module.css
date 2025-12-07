@@ -131,8 +131,8 @@
 }
 
 .roomJoinButton {
-  @apply w-full bg-brand-action hover:bg-brand-action/90 text-white;
-  @apply font-medium rounded-lg py-2.5 transition-all;
+  @apply w-full font-medium rounded-lg py-3 transition-all;
+  @apply bg-brand-action text-white hover:bg-brand-action/90;
 }
 
 /* ========== TRIVIA ========== */
@@ -264,4 +264,9 @@
 
 .animatePulse {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.roomStatusText {
+  @apply text-orange-500 font-semibold border-b-2 border-orange-500;
+  @apply bg-transparent px-0 py-0 rounded-none;
 }

@@ -6,6 +6,14 @@ export default {
   ],
   theme: {
     extend: {
+      // ⭐ TIPOGRAFÍA GLOBAL
+      fontSize: {
+        h1: "32px",
+        h2: "24px",
+        h3: "20px",
+        body: "16px",
+        small: "14px",
+      },
       colors: {
         // ... tus colores existentes ...
         border: "hsl(var(--border))",
@@ -13,6 +21,7 @@ export default {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
@@ -41,13 +50,18 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        'brand-action': '#FF7A00',
-        'primary-contrast': '#1E3A8A',
-        'neutral-black': '#000000',
-        'neutral-white': '#FFFFFF',
-        'success-progress': '#22C55E',
-        'danger-progress': '#EF4444',
+
+        // ⭐ PALETA PERSONALIZADA
+        "brand-action": "#FF7A00",
+        "primary-contrast": "#1E3A8A",
+        "neutral-black": "#000000",
+        "neutral-white": "#FFFFFF",
+
+        // Estado visual
+        "success-progress": "#22C55E",
+        "danger-progress": "#EF4444",
       },
+      // ⭐ BORDER RADIUS
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
@@ -56,6 +70,6 @@ export default {
     },
   },
   plugins: [
-    require("tailwindcss-animate") // ← AGREGAR ESTO
+    require("tailwindcss-animate") 
   ],
 }

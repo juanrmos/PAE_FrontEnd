@@ -105,7 +105,7 @@ const Profile = () => {
     <div className="space-y-6 max-w-5xl mx-auto">
       {/* Cabecera del Perfil */}
       <Card className="overflow-hidden">
-        <div className="h-32 bg-gradient-to-r from-primary-contrast to-brand-action" />
+        <div className="h-32 bg-gradient-to-r from-[#00FF6A] to-[#FF8A00]" />
         <CardContent className="relative -mt-16 pb-6">
           <div className="flex flex-col md:flex-row gap-6 items-start md:items-end">
             {/* Avatar con botón de editar */}

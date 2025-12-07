@@ -14,12 +14,12 @@
 
 .groupCard::before {
   content: '';
-  @apply absolute top-0 left-0 w-1 h-full bg-brand-action;
+  @apply absolute top-0 left-0 w-[3px] h-full bg-gradient-to-b from-brand-action/60 to-brand-action/20;
   @apply transition-all duration-300;
 }
 
 .groupCard:hover::before {
-  @apply w-2;
+  @apply w-[5px] from-brand-action/100 to-brand-action/40;
 }
 
 .groupAvatar {
@@ -35,8 +35,8 @@
 }
 
 .groupSubject {
-  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold;
-  @apply bg-brand-action/10 text-brand-action;
+  @apply text-orange-500 font-semibold border-b-2 border-orange-500 pb-0;
+  @apply bg-transparent rounded-none px-0 py-0;
 }
 
 .groupMeta {
@@ -52,8 +52,8 @@
 }
 
 .groupEnterButton {
-  @apply mt-4 w-full bg-brand-action hover:bg-brand-action/90 text-white;
-  @apply font-medium rounded-lg py-2.5 transition-all;
+  @apply w-full bg-brand-action text-white font-medium py-3 rounded-lg transition-all;
+  @apply hover:bg-brand-action/90 disabled:opacity-50;
 }
 
 /* ========== VISTA DETALLE (LAYOUT CHAT) ========== */

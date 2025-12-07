@@ -2,8 +2,8 @@
 import { NavLink, Link } from "react-router-dom";
 import { cn } from "../../utils/cn";
 import { ScrollArea } from "../../desingSystem/primitives";
-import { type LucideIcon, Home } from "lucide-react";
-import { BRAND_CONFIG } from "../../config/brandConfig";
+import { type LucideIcon, Home, BookOpen} from "lucide-react";
+import { BRAND_CONFIG } from "../../config/brandConfig"; 
 
 export interface SidebarItem {
   label: string;
@@ -19,15 +19,43 @@ interface SidebarProps {
   backRoute?: string; 
 }
 
-const DEFAULT_ITEMS: SidebarItem[] = [];
+//Parte del menú de los cursos
+const DEFAULT_ITEMS: SidebarItem[] = [
+  {
+    label: "Panel",
+    to: "/",
+    icon: Home,
+  },
+  {
+    label: "Cursos",
+    to: "/cursos",
+    icon: BookOpen,
+  },
+  {
+    label: "Repositorios",
+    to: "/repositorios",
+    icon: BookOpen, // Si tienes otro icono mejor, lo cambias
+  },
+  {
+    label: "Comunidades",
+    to: "/comunidades",
+    icon: BookOpen,
+  },
+  {
+    label: "Simulacros",
+    to: "/simulacros",
+    icon: BookOpen,
+  },
+];
 
 export function Sidebar({ 
   className, 
   onClose, 
-  items = DEFAULT_ITEMS, 
+  items,
   title = BRAND_CONFIG.name, // ✅ Usa configuración de marca
-  backRoute 
+  backRoute,
 }: SidebarProps) {
+  const finalItems = items && items.length > 0 ? items : DEFAULT_ITEMS;
   return (
     <aside className={cn("flex h-full w-72 flex-col border-r border-neutral-200 bg-neutral-white", className)}>
       
@@ -67,7 +95,7 @@ export function Sidebar({
 
       <ScrollArea className="flex-1 px-4 py-2">
         <nav className="flex flex-col gap-1">
-          {items.map((item) => (
+          {finalItems.map((item) => (
             <NavLink
               key={item.to}
               to={item.to}

@@ -78,7 +78,7 @@ export function GroupCard({ group, role, onDelete }: GroupCardProps) {
       </div>
 
       <div>
-        <Badge className={styles.groupSubject}>{group.subject}</Badge>
+        <span className={styles.groupSubject}>{group.subject}</span>
         <h3 className={styles.groupTitle}>{group.name}</h3>
       </div>
 
@@ -102,12 +102,22 @@ export function GroupCard({ group, role, onDelete }: GroupCardProps) {
         </div>
       )}
 
-      <Button className={styles.groupEnterButton} onClick={(e) => {
-        e.stopPropagation();
-        handleEnter();
-      }}>
-        Ingresar al Grupo
-      </Button>
+      <button 
+  className="
+    bg-brand-action       
+    text-white            
+    font-medium           
+    w-full                
+    py-3                  
+    rounded-lg            
+    shadow-sm             
+    hover:bg-brand-action/90 
+    active:scale-95       
+    transition-all
+  "
+>
+  Ingresar al Grupo
+</button>
     </div>
   );
 }

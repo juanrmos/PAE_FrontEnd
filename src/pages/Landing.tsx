@@ -110,7 +110,10 @@ const Landing = () => {
             🚀 Tu éxito académico empieza hoy
           </div>
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-tight drop-shadow-lg animate-in fade-in slide-in-from-bottom-6 duration-700">
-            Plataforma de <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-400">Apoyo Estudiantil</span>
+            Plataforma de{" "}
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00FF7F] to-[#FF6A00]">
+            Apoyo Estudiantil
+          </span>
           </h1>
           <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed drop-shadow-md animate-in fade-in slide-in-from-bottom-8 duration-700 delay-100">
             Únete a la comunidad educativa más grande y accede a herramientas diseñadas para potenciar tu aprendizaje.
@@ -138,7 +141,7 @@ const Landing = () => {
             {/* Texto y Lista */}
             <div className="space-y-8 animate-in slide-in-from-left duration-700">
               <h2 className="text-3xl md:text-4xl font-bold text-neutral-800 leading-tight">
-                Todo lo que necesitas para <span className="text-brand-action">triunfar</span>
+                Todo lo que necesitas para <span className="text-[#00FF7F]">triunfar</span>
               </h2>
               <p className="text-neutral-600 text-lg">
                 Nuestra plataforma está diseñada pensando en tus necesidades. Olvídate del material desactualizado y estudia a tu propio ritmo.
@@ -163,7 +166,7 @@ const Landing = () => {
             <div className="relative flex justify-center animate-in slide-in-from-right duration-700 delay-200">
               <div className="absolute inset-0 bg-gradient-to-tr from-brand-action/20 to-blue-500/20 rounded-full blur-[100px]" />
               <div className="relative bg-white rounded-[2rem] p-8 shadow-2xl border border-neutral-100 transform hover:-rotate-2 transition-transform duration-500">
-                <div className="bg-gradient-to-br from-brand-action to-blue-600 rounded-2xl p-12 text-white shadow-inner">
+                <div className="bg-gradient-to-br from-[#FF6A00] to-[#00FF7F] rounded-2xl p-12 text-white shadow-inner">
                   <GraduationCap className="h-48 w-48 drop-shadow-2xl" />
                 </div>
                 {/* Floating Badge */}

@@ -48,11 +48,11 @@ export function ForumCard({ forum, onLike, onReport, onClick }: ForumCardProps) 
               </AvatarFallback>
             </Avatar>
             <span className="font-medium">{forum.author}</span>
-            <Badge 
-              className={forum.authorRole === "docente" ? styles.roleBadgeTeacher : styles.roleBadgeStudent}
+            <span 
+              className={styles.roleTag}
             >
               {forum.authorRole === "docente" ? "Docente" : "Estudiante"}
-            </Badge>
+            </span>
           </div>
         </div>
 

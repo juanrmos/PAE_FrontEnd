@@ -166,21 +166,13 @@ const Desafios = () => {
                     <p className={styles.roomHost}>{room.host}</p>
                     <p className={styles.roomTopic}>{room.topic}</p>
                   </div>
-                  <Badge
-                    className={
-                      room.status === "waiting"
-                        ? styles.roomBadgeWaiting
-                        : room.status === "playing"
-                        ? styles.roomBadgePlaying
-                        : styles.roomBadgeFull
-                    }
-                  >
+                  <span className={styles.roomStatusText}>
                     {room.status === "waiting"
                       ? "Esperando"
                       : room.status === "playing"
                       ? "En juego"
                       : "Llena"}
-                  </Badge>
+                  </span>
                 </CardHeader>
 
                 <CardContent className="space-y-4">
@@ -214,19 +206,25 @@ const Desafios = () => {
                   </Badge>
 
                   <Button
-                    className={styles.roomJoinButton}
-                    onClick={() => joinRoom(room.id)}
-                    disabled={
-                      room.status !== "waiting" ||
-                      room.currentPlayers >= room.maxPlayers
-                    }
-                  >
-                    {room.status === "waiting"
-                      ? "Unirse a la Sala"
-                      : room.status === "playing"
-                      ? "Partida en Curso"
-                      : "Sala Llena"}
-                  </Button>
+                    variant="brand"
+                    className={`
+                    ${styles.roomJoinButton}
+                    disabled:!bg-brand-action/50
+                    disabled:!text-white
+                    disabled:cursor-not-allowed
+                  `}
+                  onClick={() => joinRoom(room.id)}
+                  disabled={
+                    room.status !== "waiting" ||
+                    room.currentPlayers >= room.maxPlayers
+                  }
+                >
+                  {room.status === "waiting"
+                    ? "Unirse a la Sala"
+                    : room.status === "playing"
+                    ? "Partida en Curso"
+                    : "Sala Llena"}
+                </Button>
                 </CardContent>
               </Card>
             ))}
